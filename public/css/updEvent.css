@@ -1,0 +1,396 @@
+/* ----------------------------------------------------
+ 縦向き（portrait）※ ②ベース
+---------------------------------------------------- */
+@media (orientation: portrait) {
+    .nav-back-button{
+        font-size: 36px;
+        font-weight: bold;
+        background:none;
+        color: red;
+        border: none;
+    }
+    /**/
+    .main-container{
+        background-color: #f8f9fa;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    /**/
+    .updEvent-header{
+        width: 100%;
+        height: 60px;
+        margin-bottom: 12px;
+        display: grid;
+        grid-template-columns: 20% 60% 20%;
+        padding: 24px;
+        border-top: 2px solid;
+    }
+    .updEvent-header button{
+        width: 100%;
+        height: 100%;
+        font-size: 36px;
+        background: none;
+        color: red;
+        border: none;
+        cursor: pointer;
+    }
+    .updEvent-header div{
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 48px;
+        font-weight: bold;
+    }
+    /**/
+    .updEvent-container{
+        width: 80%;
+        padding: 36px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 48px;
+    }
+    /* タイトル */
+    .updEvent-container .event-title{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+    .updEvent-container .event-title input[type="text"]{
+        width: 100%;
+        padding: 24px 36px;
+        font-size: 36px;
+        background-color: #ffffff;
+        display: flex;
+        align-items: center;
+
+        border: 2px solid none;
+        border-radius: 36px;
+    }
+    /* 開始/終了日時の設定 */
+    .updEvent-container .event-date{
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        background-color: #ffffff;
+        border: 2px solid none;
+        border-radius: 36px;
+    }
+    .event-date .upd-event-datetime-container {
+        margin: 24px 0;
+        width: 80%;
+        display: grid;
+        grid-template-columns: 40% 60%;
+        align-items: center;
+        justify-content: center;
+        border-bottom: 2px solid #ccc;
+        padding: 12px;
+    }
+    .upd-event-datetime-container label{
+        font-size: 36px;
+        font-weight: bold;
+        color: #000000;
+        margin-right: 12px;
+        text-align: left;
+    }
+    .upd-event-datetime-container input{
+        height: 48px;
+        width: 90%;
+        font-size: 24px;
+        padding: 6px 12px;
+        border-radius: 12px;
+        border: 2px solid #ccc;
+        color: #000000;
+        padding: 12px;
+    }
+    /* トグルスイッチ設定 */
+    .switch {
+        position: relative;
+        width: 100px;
+        height: 60px;
+        justify-self: end; /* gridの右寄せ */
+    }
+    /* checkboxを隠す */
+    .switch input[type="checkbox"] {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+    /**/
+    .updEvent-container .event-labalColor{
+        width: 100%;
+        display: grid;
+        grid-template-columns: 40% 60%;
+        justify-content: center;
+        align-items: center;
+        background-color: #ffffff;
+        border-radius: 36px;
+        padding: 24px 0;
+    }
+    .event-labalColor .left{
+        display: flex;
+        justify-content: left;
+        align-items: center;
+    }
+    .event-labalColor .right{
+        display: flex;
+        justify-content: left;
+        align-items: center;
+        gap: 12px;
+    }
+    .event-labalColor .left label{
+        font-size: 24px;
+        font-weight: bold;
+        color: #000000;
+        margin-left: 24px;
+    }
+    .event-labalColor .right input[type="color"]{
+        height: 50px;
+        width: 50px;
+        border-radius: 50%;
+        border: 2px solid #ccc;
+    }
+    .event-labalColor .right input[type="text"]{
+        height: 48px;
+        width: 70%;
+        font-size: 24px;
+        padding: 6px 12px;
+        border-radius: 12px;
+        border: none;
+        color: #000000;
+    }
+    /* メモ */
+    .updEvent-container .event-text{
+        width: 100%;
+        background-color: #ffffff;
+        border-radius: 36px;
+        padding: 24px 0;
+        height: 500px;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .event-text input[type="text"]{
+        width: 90%;
+        font-size: 24px;
+        padding: 12px;
+        border: none;
+        color: #000000;
+        resize: none;
+        padding: 12px;
+        margin: 12px 0;
+        border-bottom: 2px solid #ccc;
+    }
+    .event-text textarea{
+        width: 90%;
+        height: 70%;
+        font-size: 24px;
+        padding: 12px;
+        border: none;
+        color: #000000;
+        resize: none;
+        padding: 12px;
+        margin-top: 12px;
+        border-bottom: 2px solid #ccc;
+    }
+    /**/
+    .event-delete{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+    .event-delete button{
+        width: 80%;
+        background-color: #ffffff;
+        border: none;
+        border-radius: 36px;
+        color: red;
+        padding: 24px 0;
+        font-size: 24px;
+    }
+}
+
+/* ----------------------------------------------------
+ 横向き（landscape）
+---------------------------------------------------- */
+@media (orientation: landscape) {
+
+    .main-container {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        background: #f0f0f0;
+    }
+
+    .updEvent-header {
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        align-items: center;
+        padding: 8px 12px;
+        margin-bottom: 8px;
+    }
+    .updEvent-header button {
+        font-size: 16px;
+        background: none;
+        border: none;
+        color: #007aff;
+    }
+    .updEvent-header div {
+        text-align: center;
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    .updEvent-container {
+        flex: 1;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        width: 100% ;
+        margin: 12px 0;
+    }
+
+    .event-title{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+    .event-title input {
+        width: 90%;
+        margin: 0 auto;
+        font-size: 20px;
+        padding: 14px;
+        border-radius: 16px;
+        border: 1px solid #ccc;
+    }
+
+    .event-date,
+    .event-labalColor,
+    .event-text {
+        width: 90%;
+        margin: 0 auto;
+        background: #fff;
+        border-radius: 16px;
+        padding: 12px;
+        display: flex;
+    }
+
+    .event-date,
+    .event-text{
+        flex-direction: column;
+    }
+    .event-date .upd-event-datetime-container {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 40% 60%;
+        align-items: center;
+        justify-content: center;
+        border-bottom: 2px solid #ccc;
+        padding: 12px 0;
+    }
+    .upd-event-datetime-container label{
+        font-size: 14px;
+        font-weight: bold;
+        color: #000000;
+        margin-right: 12px;
+        text-align: left;
+    }
+    .upd-event-datetime-container input{
+        height: 24px;
+        font-size: 14px;
+        padding: 6px 12px;
+        border-radius: 12px;
+        border: 2px solid #ccc;
+        color: #000000;
+        padding: 12px;
+    }
+
+    .updEvent-container .event-labalColor{
+        width: 90%;
+        display: grid;
+        grid-template-columns: 40% 60%;
+        justify-content: center;
+        align-items: center;
+        background-color: #ffffff;
+        border-radius: 12px;
+    }
+    .event-labalColor .left{
+        display: flex;
+        justify-content: left;
+        align-items: center;
+    }
+    .event-labalColor .right{
+        display: flex;
+        justify-content: left;
+        align-items: center;
+        gap: 12px;
+    }
+    .event-labalColor .left label{
+        font-size: 14px;
+        font-weight: bold;
+        color: #000000;
+        margin-left: 24px;
+    }
+    .event-labalColor .right input[type="color"]{
+        height: 25px;
+        width: 25px;
+        border-radius: 50%;
+        border: 2px solid #ccc;
+    }
+    .event-labalColor .right input[type="text"]{
+        height: 24px;
+        width: 70%;
+        font-size: 14px;
+        padding: 6px 12px;
+        border-radius: 12px;
+        border: none;
+        color: #000000;
+    }
+
+    /* メモ */
+    .updEvent-container .event-text{
+        background: #fff;
+        border-radius: 16px;
+        padding: 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        width: 90%;
+        margin: 0 auto;
+    }
+    .event-text input,
+    .event-text textarea {
+        font-size: 14px;
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+    }
+    .event-text textarea {
+        min-height: 120px;
+        resize: vertical;
+    }
+
+    .event-delete{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+    .event-delete button {
+        width: 90%;
+        margin: 0 auto;
+        height: 48px;
+        background: #fff;
+        color: #ff3b30;
+        border: none;
+        border-radius: 16px;
+    }
+}

@@ -1,0 +1,129 @@
+<main class="main-container">
+    <div class="year-display">
+        <p id="yearText"><%= year %>年</p>
+    </div>
+
+    <div class="month-display">
+        <div class="month-main" id="calendar"></div>
+    </div>
+</main>
+
+<script>
+/* ===============================
+   定数
+=============================== */
+const calendarEl = document.getElementById("calendar");
+let year = <%= year %>;
+
+/* ===============================
+   年間カレンダー生成
+=============================== */
+function createYearCalendar(year) {
+    for (let month = 0; month < 12; month++) {
+
+        const monthContainer = document.createElement("div");
+        monthContainer.className = "month-container";
+        monthContainer.dataset.month = month + 1;
+
+        const monthLabel = document.createElement("div");
+        monthLabel.className = "month-label";
+        monthLabel.textContent = `${month + 1}月`;
+
+        const table = createTable(month);
+
+        monthContainer.appendChild(monthLabel);
+        monthContainer.appendChild(table);
+        calendarEl.appendChild(monthContainer);
+    }
+}
+
+/* ===============================
+   日付テーブル生成
+=============================== */
+function createTable(month) {
+    const table = document.createElement("table");
+    table.className = "day-table";
+
+    const firstDay = new Date(year, month, 1).getDay();
+    const lastDate = new Date(year, month + 1, 0).getDate();
+    const today = new Date();
+
+    let date = 1;
+
+    for (let row = 0; row < 6; row++) {
+        const tr = document.createElement("tr");
+
+        for (let col = 0; col < 7; col++) {
+            const td = document.createElement("td");
+
+            if (row === 0 && col < firstDay || date > lastDate) {
+                td.textContent = "";
+            } else {
+                const el = document.createElement("div");
+                el.className = "day-text";
+                el.textContent = date;
+
+                if (
+                    year === today.getFullYear() &&
+                    month + 1 === today.getMonth() + 1 &&
+                    date === today.getDate()
+                ) {
+                    el.classList.add("today");
+                }
+
+                td.appendChild(el);
+                date++;
+            }
+            tr.appendChild(td);
+        }
+        table.appendChild(tr);
+    }
+    return table;
+}
+
+/* ===============================
+   年変更処理
+=============================== */
+function updateYear(newYear) {
+    year = newYear;
+    document.getElementById("yearText").textContent = `${year}年`;
+    calendarEl.innerHTML = "";
+    createYearCalendar(year);
+}
+
+function onYearUp()   { updateYear(year - 1); }
+function onYearDown() { updateYear(year + 1); }
+
+/* ===============================
+   スワイプ操作
+=============================== */
+const container = document.querySelector(".month-display");
+let startX = 0, startY = 0;
+
+container.addEventListener("pointerdown", e => {
+    startX = e.clientX;
+    startY = e.clientY;
+});
+
+container.addEventListener("pointerup", e => {
+    const diffX = e.clientX - startX;
+    const diffY = e.clientY - startY;
+
+    if (Math.abs(diffY) < 50) return;
+    if (Math.abs(diffY) > Math.abs(diffX)) {
+        diffY < 0 ? onYearUp() : onYearDown();
+    }
+});
+
+/* ===============================
+   月クリック
+=============================== */
+calendarEl.addEventListener("click", e => {
+    const target = e.target.closest(".month-container");
+    if (!target) return;
+    location.href = `/month?year=${year}&month=${target.dataset.month}`;
+});
+
+/* 初期表示 */
+createYearCalendar(year);
+</script>

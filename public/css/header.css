@@ -1,0 +1,119 @@
+/* ----------------------------------------
+   共通
+---------------------------------------- */
+.header-container {
+    background-color: #f8f9fa;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+/* 共通：左右セクション */
+.header-container .left-section,
+.header-container .right-section {
+    display: flex;
+}
+
+/* ボタン共通 */
+.header-container button {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    color: red;
+}
+
+/* ---------------------------------------
+   横向き（landscape）
+--------------------------------------- */
+@media (orientation: landscape) {
+    .header-container {
+        display: grid;
+        grid-template-columns: 1fr 2fr 1fr;
+        height: 60px;
+    }
+    .header-container .left-section {
+        justify-content: flex-start;
+        gap: 50px;
+        padding: 0 10px;
+    }
+    .header-container .left-section button {
+        width: 40px;
+        height: 40px;
+        margin: 10px 0;
+    }
+    .header-container .center-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0 10px;
+    }
+    .center-container .date-type-list {
+        display: flex;
+        align-items: center;
+        height: 90%;
+        gap: 5px;
+        padding: 1px 2px;
+        background-color: #c9c9c9;
+        border-radius: 12px;
+    }
+    .date-type-list .date-type-item {
+        height: 90%;
+        aspect-ratio: 2 / 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 12px;
+        font-weight: bold;
+    }
+    .date-type-list .date-type-item:hover {
+        background-color: #ffffff;
+    }
+    .header-container .right-section {
+        justify-content: flex-end;
+        gap: 50px;
+        padding: 0 10px;
+    }
+    .header-container .right-section button {
+        width: 40px;
+        height: 40px;
+        margin: 10px 0;
+    }
+    .right-section .event-add-button {
+        display: none;
+    }
+}
+
+/* ----------------------------------------
+   縦向き（portrait）
+---------------------------------------- */
+@media (orientation: portrait) {
+    .header-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        height: 150px;
+    }
+    .header-container .left-section {
+        justify-content: flex-start;
+        align-items: center;
+        padding: 0 50px;
+    }
+    .header-container .right-section {
+        justify-content: flex-end;
+        gap: 50px;
+        padding: 0 50px;
+        align-items: center;
+    }
+    .header-container .right-section button {
+        width: 100px;
+        height: 80px;
+        margin: 50px 0;
+    }
+    .header-container .center-container {
+        display: none;
+    }
+    .header-container .left-section .event-add-button{
+        display: none;
+    }
+}

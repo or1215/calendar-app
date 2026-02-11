@@ -1,0 +1,14 @@
+<footer class="footer-container">
+    <div class="left-section">
+        <button class="today-button" id="today-btn">今日</button>
+    </div>
+    <div class="right-section">
+        <p class="version">© 2025 My Server. All rights reserved.</p>
+    </div>
+</footer>
+<script>
+    const todayBtn = document.getElementById('today-btn');
+    todayBtn.addEventListener('click', async () =>{
+        location.href = '/today'
+    });
+</script>

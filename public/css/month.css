@@ -1,0 +1,148 @@
+.nav-back-button {
+    font-weight: bold;
+    background: none;
+    color: red;
+}
+.day-main table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.day-main table thead tr {
+    border-bottom: 2px solid #b7b7b7;
+}
+.day-main table tbody tr {
+    border-bottom: 1px solid #ccc;
+}
+.day-main table tbody tr td {
+    text-align: center;
+    vertical-align: top;
+}
+
+.main-container .event-list{
+    width: calc(100% - 12px);
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    padding: 12px;
+    gap: 12px;
+}
+.event-list .event-item{
+    text-align: right;
+    padding: 12px 24px;
+    font-weight: bold;
+    background-color: #fcfcfc;
+}
+/* ----------------------------------------
+   縦向き（portrait）
+---------------------------------------- */
+@media (orientation: portrait) {
+    .nav-back-button {
+        font-size: 36px;
+    }
+    .month-container {
+        height: 100%;
+    }
+    /* 月表示 */
+    .month-display {
+        height: 10%;
+        display: flex;
+        align-items: center;
+    }
+    .month-display .month-text {
+        font-size: 3vh;
+        margin-left: 50px;
+        letter-spacing: 10px;
+    }
+    .month-display .year-month-text {
+        display: none;
+    }
+    /* 日表示 */
+    .day-display {
+        height: 90%;
+        display: flex;
+        justify-content: center;
+        touch-action: pan-x;
+    }
+    .day-display .day-main {
+        width: 90%;
+        height: 100%;
+    }
+    .day-main table {
+        height: 100%;
+    }
+    .day-main table tbody tr td .day-text {
+        font-size: 24px;
+        width: 80px;
+        height: 80px;
+        margin: 10px auto;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .day-main table tbody tr td .schedules-list {
+        height: 55%;
+    }
+    .day-main table tbody tr td .schedules-list div {
+        height: 10px;
+        width: 80%;
+        margin: 10px auto;
+    }
+    .event-list {
+        display: none;
+    }
+}
+
+/* ---------------------------------------
+   横向き（landscape）
+--------------------------------------- */
+@media (orientation: landscape) {
+    .nav-back-button {
+        font-size: 24px;
+    }
+    .main-container {
+        display: grid;
+        grid-template-columns: 400px 1fr;
+    }
+    /* 月表示 */
+    .month-display {
+        height: 32px;
+        display: flex;
+        align-items: center;
+    }
+    .month-display .month-text {
+        display: none;
+    }
+    .month-display .year-month-text {
+        font-size: 20px;
+        margin-left: 20px;
+        letter-spacing: 6px;
+        font-weight: bold;
+    }
+    /* 日表示 */
+    .day-display {
+        height: calc(100vh - 32px);
+        display: flex;
+        justify-content: center;
+        touch-action: pan-x;
+    }
+    .day-main table {
+        max-width: 400px;
+    }
+    .day-main table tbody tr {
+        height: 42px;
+    }
+    .day-main table tbody tr td .day-text {
+        font-size: 16px;
+        width: 40px;
+        height: 40px;
+        margin: 4px auto;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .schedules-list {
+        display: none;
+    }
+}

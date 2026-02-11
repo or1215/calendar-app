@@ -1,0 +1,47 @@
+<header class="header-container">
+    <div class="left-section">
+        <button class="event-add-button"></button>
+        <% if(page=="month"){ %>
+        <button class="nav-back-button" id="yearText">＜<%= year %>年</button>
+        <% } else if(page=="day"){ %>
+        <button class="nav-back-button" id="dateText">＜<%= year %>年<%= month %>月</button>
+        <% } else if(page=="updEvent") { %>
+        <button class="nav-back-button" id="dateText">＜<%= year %>年<%= month %>月<%= day %>日</button>
+        <% } %>
+    </div>
+    <div class="center-container">
+        <div class="date-type-list">
+            <div class="date-type-item" id="date-type-day">日</div>
+            <div class="date-type-item" id="date-type-month">月</div>
+            <div class="date-type-item" id="date-type-year">年</div>
+        </div>
+    </div>
+    <div class="right-section">
+        <button class="search-button"></button>
+        <button class="event-add-button"></button>
+    </div>
+</header>
+<script>
+const dateTypeEl = document.getElementById(`date-type-${PAGE}`);
+if(dateTypeEl) dateTypeEl.style.backgroundColor = '#ffffff';
+
+/* 初期処理 */
+document.addEventListener('DOMContentLoaded' , () => {
+    const dayType   = document.getElementById('date-type-day');
+    const monthType = document.getElementById('date-type-month');
+    const yearType  = document.getElementById('date-type-year');
+    const today = new Date();
+    const year  = typeof YEAR  !== 'undefined' ? YEAR  : today.getFullYear();
+    const month = typeof MONTH !== 'undefined' ? MONTH : today.getMonth() + 1;
+    const day   = typeof DAY   !== 'undefined' ? DAY   : today.getDay() + 1;
+    dayType.addEventListener('click', () => {
+        location.href = `/day?year=${year}&month=${month}&day=${day}`;
+    });
+    monthType.addEventListener('click', () => {
+        location.href = `/month?year=${year}&month=${month}`;
+    });
+    yearType.addEventListener('click', () => {
+        location.href = `/year?year=${year}`;
+    });
+});
+</script>

@@ -1,0 +1,126 @@
+/* ===== 年度表示 ===== */
+.year-display {
+    display: flex;
+    align-items: center;
+    background-color: white;
+}
+.year-display p {
+    font-weight: bolder;
+    margin: 0;
+    padding: 0;
+    margin-left: 12px;
+}
+
+/* ===== 月表示 ===== */
+.month-display {
+    touch-action: pan-x;
+    background-color: white;
+}
+.month-display .month-main {
+    height: 100%;
+    display: grid;
+    text-align: center;
+}
+
+/* ===== 各月 ===== */
+.month-main .month-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+}
+/* 月ラベル */
+.month-container .month-label {
+    text-align: left;
+}
+.month-container .day-table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+.day-table tr {
+    height: calc(100% / 6);
+}
+.day-table td {
+    padding: 0;
+    text-align: center;
+}
+.day-table td .day-text {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 今日 */
+.today {
+    background-color: #ff7070;
+    border-radius: 50%;
+}
+
+/* ========================================
+   横向き（ランドスケープ）
+======================================== */
+@media (orientation: landscape) {
+    .year-display {
+        height: 48px;
+    }
+    .year-display p {
+        font-size: 24px;
+    }
+    .month-display {
+        height: calc(100% - 48px);
+    }
+    .month-display .month-main {
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        grid-template-rows: repeat(2, 1fr);
+        gap: 8px;
+    }
+    .month-container .month-label {
+        flex: 0 0 20px;
+        font-size: 12px;
+    }
+    .month-container .day-table {
+        flex: 1;
+    }
+    .day-table td .day-text {
+        max-width: 32px;
+    }
+}
+
+/* ========================================
+   縦向き（ポートレート）
+======================================== */
+@media (orientation: portrait) {
+    .year-display {
+        height: 10%;
+    }
+    .year-display p {
+        font-size: 60px;
+        border-bottom: 3px solid #000;
+    }
+    .month-display {
+        height: 90%;
+        margin: 0 10px;
+    }
+    .month-display .month-main {
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(4, 1fr);
+        gap: 10px;
+    }
+    .month-container .month-label {
+        height: 10%;
+        font-size: 24px;
+    }
+    .month-label p {
+        padding: 12px;
+    }
+    .month-container .day-table {
+        height: 85%;
+    }
+    .day-table td .day-text {
+        max-width: 40px;
+    }
+}

@@ -1,0 +1,458 @@
+/* ----------------------------------------------------
+ 縦向き（portrait）※ ②ベース
+---------------------------------------------------- */
+@media (orientation: portrait) {
+
+    /**
+    * addEvent.css
+    * 新規イベント追加用モーダルのスタイル
+    */
+    .add-event{
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 9999;
+        width: 100%;
+        align-items: center;
+        border: 3px solid #ccc;
+        padding: 24px;
+        background-color: #f0f0f0;
+
+        /* アニメーション */
+        transform: translateY(-100%);
+        opacity: 0;
+        transition: transform 0.6s ease, opacity 0.6s ease;
+        pointer-events: none;
+    }
+
+    .add-event.active{
+        transform: translateY(0);
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    /* ヘッダー部分 */
+    .add-event .add-event-header{
+        width: 100%;
+        height: 60px;
+        margin-bottom: 12px;
+        display: grid;
+        grid-template-columns: 20% 60% 20%;
+        padding: 24px;
+    }
+    .add-event .add-event-header button{
+        width: 100%;
+        height: 100%;
+        font-size: 36px;
+        background: none;
+        color: red;
+        border: none;
+        cursor: pointer;
+    }
+    .add-event .add-event-header div{
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 48px;
+        font-weight: bold;
+    }
+
+    /* イベントタイトル入力部分 */
+    .add-event-body{
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .add-event-body .add-event-title{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .add-event-body .add-event-title input[type="text"]{
+        height: 60px;
+        width: 80%;
+        font-size: 36px;
+        font-weight: bold;
+        color: #000000;
+        padding: 12px;
+        border-radius: 36px;
+        padding-left: 24px;
+    }
+
+    /* イベント日時選択部分 */
+    .add-event-body .add-event-datetime{
+        width: 80%;
+        border-radius: 24px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin: 24px 0;
+        background-color: #ffffff;
+        padding: 24px 0;
+    }
+    .add-event-body .add-event-datetime .add-event-datetime-container{
+        margin: 24px 0;
+        width: 80%;
+        display: grid;
+        grid-template-columns: 40% 60%;
+        align-items: center;
+        justify-content: center;
+        border-bottom: 2px solid #ccc;
+        padding: 12px;
+    }
+    .add-event-datetime-container label{
+        font-size: 36px;
+        font-weight: bold;
+        color: #000000;
+        margin-right: 12px;
+        text-align: left;
+    }
+    .add-event-datetime-container input[type="datetime-local"]{
+        height: 48px;
+        width: 90%;
+        font-size: 24px;
+        padding: 6px 12px;
+        border-radius: 12px;
+        border: 2px solid #ccc;
+        color: #000000;
+        padding: 12px;
+    }
+    .add-event-datetime-container input[type="date"]{
+        height: 48px;
+        width: 90%;
+        font-size: 24px;
+        padding: 6px 12px;
+        border-radius: 12px;
+        border: 2px solid #ccc;
+        color: #000000;
+        padding: 12px;
+    }
+
+    /* トグルスイッチ設定 */
+    .switch {
+        position: relative;
+        width: 100px;
+        height: 60px;
+        justify-self: end; 
+    }
+    /* checkboxを隠す */
+    .switch input[type="checkbox"] {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+    /* 背景 */
+    .slider {
+        position: absolute;
+        inset: 0;
+        background-color: #ccc;
+        border-radius: 36px;
+        transition: 0.3s;
+    }
+    /* つまみ */
+    .slider::before {
+        content: "";
+        position: absolute;
+        height: 52px;
+        width: 52px;
+        left: 4px;
+        top: 4px;
+        background-color: #fff;
+        border-radius: 50%;
+        transition: 0.3s;
+    }
+    /* ON状態 */
+    .switch input:checked + .slider {
+        background-color: #4caf50;
+    }
+    .switch input:checked + .slider::before {
+        transform: translateX(42px);
+    }
+
+    /* イベントラベルカラー選択部分 */
+    .add-event-body .add-event-label-color{
+        width: 80%;
+        display: grid;
+        grid-template-columns: 40% 60%;
+        justify-content: center;
+        align-items: center;
+        margin: 24px 0;
+        background-color: #ffffff;
+        border-radius: 36px;
+        padding: 24px;
+    }
+    .add-event-label-color .left{
+        display: flex;
+        justify-content: left;
+        align-items: center;
+    }
+    .add-event-label-color .right{
+        display: flex;
+        justify-content: left;
+        align-items: center;
+        gap: 12px;
+    }
+    .add-event-body .add-event-label-color .left label{
+        font-size: 24px;
+        font-weight: bold;
+        color: #000000;
+        margin-left: 24px;
+    }
+    .add-event-label-color .right input[type="color"]{
+        height: 50px;
+        width: 50px;
+        border-radius: 50%;
+        border: 2px solid #ccc;
+    }
+    .add-event-label-color .right input[type="text"]{
+        height: 48px;
+        width: 70%;
+        font-size: 24px;
+        padding: 6px 12px;
+        border-radius: 12px;
+        border: none;
+        color: #000000;
+    }
+
+    /* イベントメモ入力部分 */
+    .add-event-body .add-event-memo{
+        width: 80%;
+        background-color: #ffffff;
+        border-radius: 36px;
+        padding: 24px;
+        height: 500px;
+    }
+    .add-event-memo input[type="text"]{
+        width: 100%;
+        font-size: 24px;
+        padding: 12px;
+        border: none;
+        color: #000000;
+        resize: none;
+        padding: 12px;
+        margin: 12px 0;
+        border-bottom: 2px solid #ccc;
+    }
+    .add-event-memo textarea{
+        width: 100%;
+        height: 70%;
+        font-size: 24px;
+        padding: 12px;
+        border: none;
+        color: #000000;
+        resize: none;
+        padding: 12px;
+        margin-top: 12px;
+        border-bottom: 2px solid #ccc;
+    }
+}
+
+/* ----------------------------------------------------
+ 横向き（landscape）
+---------------------------------------------------- */
+@media (orientation: landscape) {
+
+    /* 新規イベント追加モーダル */
+    .add-event {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        background-color: #f0f0f0;
+        padding: 12px;
+        transform: translateY(-100%);
+        opacity: 0;
+        transition: transform .4s ease, opacity .4s ease;
+        pointer-events: none;
+    }
+    .add-event.active {
+        transform: translateY(0);
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    /* ヘッダー */
+    .add-event-header {
+        flex-shrink: 0;
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        align-items: center;
+        padding: 8px 12px;
+        border-radius: 12px;
+        margin-bottom: 8px;
+    }
+    .add-event-header button {
+        background: none;
+        border: none;
+        font-size: 16px;
+        color: #007aff;
+        cursor: pointer;
+    }
+    .add-event-header div {
+        text-align: center;
+        font-weight: bold;
+        font-size: 16px;
+    }
+
+    /* ボディ（スクロール領域） */
+
+    .add-event-body {
+        flex: 1;
+        overflow-y: auto;
+        overflow-x: none;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        padding-bottom: 24px;
+    }
+
+    /* タイトル */
+    .add-event-body .add-event-title{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .add-event-title input {
+        width: 90%;
+        font-size: 20px;
+        padding: 14px 18px;
+        border-radius: 16px;
+        border: 1px solid #ccc;
+        outline: none;
+    }
+
+    /* 日時 */
+    .add-event-datetime {
+        background: #fff;
+        border-radius: 16px;
+        padding: 12px;
+        width: 90%;
+        margin: 0 auto;
+    }
+    .add-event-datetime-container {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        align-items: center;
+        padding: 10px 0;
+        border-bottom: 1px solid #eee;
+    }
+    .add-event-datetime-container:last-child {
+        border-bottom: none;
+    }
+    .add-event-datetime-container label {
+        font-size: 14px;
+    }
+    .add-event-datetime-container input {
+        font-size: 14px;
+        padding: 8px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+    }
+
+    /* トグル */
+    .switch {
+        width: 52px;
+        height: 28px;
+        position: relative;
+    }
+    .switch input {
+        display: none;
+    }
+    .slider {
+        position: absolute;
+        inset: 0;
+        background: #ccc;
+        border-radius: 14px;
+        transition: .3s;
+    }
+    .slider::before {
+        content: "";
+        position: absolute;
+        width: 22px;
+        height: 22px;
+        left: 3px;
+        top: 3px;
+        background: #fff;
+        border-radius: 50%;
+        transition: .3s;
+    }
+    .switch input:checked + .slider {
+        background: #4caf50;
+    }
+    .switch input:checked + .slider::before {
+        transform: translateX(24px);
+    }
+
+    /* ラベル */
+    .add-event-label-color {
+        background: #fff;
+        border-radius: 16px;
+        padding: 12px;    
+        display: grid;
+        grid-template-columns: 60% 40%;
+        flex-direction: column;
+        gap: 8px;
+        width: 90%;
+        margin: 0 auto;
+    }
+    .add-event-label-color .left{
+        display: flex;
+        justify-content: left;
+        align-items: center;
+    }
+    .add-event-label-color .right {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+    .add-event-label-color .right input[type="color"]{
+        height: 30px;
+        width: 30px;
+        border-radius: 50%;
+        border: 2px solid #ccc;
+    }
+    .add-event-label-color .right input[type="text"]{
+        height: 24px;
+        width: 70%;
+        font-size: 24px;
+        padding: 6px 12px;
+        border-radius: 12px;
+        border: none;
+        color: #000000;
+    }
+
+    /* メモ */
+
+    .add-event-memo {
+        background: #fff;
+        border-radius: 16px;
+        padding: 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        width: 90%;
+        margin: 0 auto;
+    }
+    .add-event-memo input,
+    .add-event-memo textarea {
+        font-size: 14px;
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+    }
+    .add-event-memo textarea {
+        min-height: 120px;
+        resize: vertical;
+    }
+}

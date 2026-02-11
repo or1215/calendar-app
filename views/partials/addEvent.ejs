@@ -1,0 +1,141 @@
+<section class="add-event">
+    <div class="add-event-header">
+        <button id="cancel-btn">キャンセル</button>
+        <div>新規</div>
+        <button id="add-btn" type="button">追加</button>
+    </div>
+    <div class="add-event-body">
+        <div class="add-event-title">
+            <input type="text" placeholder="タイトル" id="title">
+        </div>
+        <div class="add-event-datetime">
+            <div class="add-event-datetime-container">
+                <label>終日</label>
+                <label class="switch">
+                    <input type="checkbox" id="all-day-toggle">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="add-event-datetime-container">
+                <label>開始日時</label>
+                <input type="datetime-local" id="startEventDate">
+            </div>
+            <div class="add-event-datetime-container">
+                <label>終了日時</label>
+                <input type="datetime-local" id="endEventDate">
+            </div>
+        </div>
+        <div class="add-event-label-color">
+            <div class="left">
+                <label>ラベルカラー</label>
+            </div>
+            <div class="right">
+                <input type="color" value="#ff0000" id="labelColor">
+                <input type="text" placeholder="ラベル名" id="labelName">
+            </div>
+        </div>
+        <div class="add-event-memo">
+            <input type="text" placeholder="URL" id="url">
+            <textarea placeholder="メモ" id="memo"></textarea>
+        </div>
+    </div>
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        /* フィールドの参照を取得 */
+        const addEventBtn = document.querySelectorAll('.event-add-button');
+        const addEventSection = document.querySelector('.add-event');
+        const cancelBtn = document.getElementById('cancel-btn');
+        const addBtn = document.getElementById('add-btn');
+
+        /* --- モーダル表示・非表示の処理定義 --- */
+        /* headerの追加ボタンが押されたときにモーダルを表示 */
+        addEventBtn.forEach(btn => {
+            btn.addEventListener('click', () => {
+                addEventSection.classList.add("active");
+            });
+        })
+        /* キャンセルボタンが押されたときにモーダルを非表示 */
+        cancelBtn.addEventListener('click', () => {
+            addEventSection.classList.remove("active");
+        });
+
+        /* --- 終日トグルの処理定義 --- */
+        const allDayToggle = document.getElementById('all-day-toggle');
+        const datetimeInputs = addEventSection.querySelectorAll('input[type="datetime-local"]');
+        allDayToggle.addEventListener('change', () => {
+            if(allDayToggle.checked){
+                datetimeInputs.forEach(input => {
+                    input.type = 'date';
+                });
+            } else {
+                datetimeInputs.forEach(input => {
+                    input.type = 'datetime-local';
+                });
+            }
+        });
+
+        /* --- イベント追加処理 --- */
+        addBtn.addEventListener('click', async () => {
+            
+            /* 登録する要素の受け取り */
+            const title = document.getElementById('title').value;
+            const startDate = document.getElementById('startEventDate').value;
+            const endDate = document.getElementById('endEventDate').value;
+            const labelColor = toNullIfEmpty(document.getElementById('labelColor').value);
+            const labelName = toNullIfEmpty(document.getElementById('labelName').value);
+            const url = toNullIfEmpty(document.getElementById('url').value);
+            const memo = toNullIfEmpty(document.getElementById('memo').value);
+            alert(document.getElementById('memo').value);
+
+            /* 空白チェック */
+            if (!title || !startDate || !endDate) {
+                alert('タイトル、開始日時、終了日時は必須項目です。');
+                return;
+            }
+
+            /* サーバーへイベント追加リクエストを送信 */
+            const response = await fetch('/api/addEvent', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    title: title,
+                    startDate: startDate,
+                    endDate: endDate,
+                    labelColor: labelColor,
+                    labelName: labelName,
+                    url: url,
+                    memo: memo
+                })
+            });
+            const result = await response.json();
+            // 追加成功ならリロード
+            if (!result.success) return;
+            location.href = `/`;
+            // イベント追加後にリセットする
+            resetAddEventForm();
+            
+            // イベント追加後にモーダルを閉じる
+            addEventSection.classList.remove("active");
+        });
+    });
+
+    /* 空文字をnullに変換する関数の定義 */
+    function toNullIfEmpty(value) {
+        if (value === null || value === undefined) return null;
+        return value.trim() === "" ? null : value;
+    }
+
+    /* リセット処理の定義 */
+    function resetAddEventForm() {
+        document.getElementById('title').value = '';
+        document.getElementById('startEventDate').value = '';
+        document.getElementById('endEventDate').value = '';
+        document.getElementById('labelColor').value = '#ff0000';
+        document.getElementById('labelName').value = '';
+        document.getElementById('url').value = '';
+        document.getElementById('memo').value = '';
+    }
+    </script>
+</section>

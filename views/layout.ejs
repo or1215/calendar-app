@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>My Server</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/footer.css">
+    <link rel="stylesheet" href="/css/button.css">
+    <link rel="stylesheet" href="/css/addEvent.css">
+    <link rel="stylesheet" href="/css/search.css">
+    <% if(css){ %>
+    <link rel="stylesheet" href="/css/<%= css %>.css">
+    <% } %>
+</head>
+<body>
+    <script>
+        <% if(year) { %>
+        let YEAR  = <%= year %>;      // 表示する年データ
+        <% } %>
+        const HOLIDAYS = <%- JSON.stringify(holidays)   || {} %>;   // 祝日データ
+        const SCHEDULES = <%- JSON.stringify(schedules) || {} %>; // 予定データ
+        const PAGE = '<%= page %>';
+    </script>
+    <%- include('partials/header') %>
+
+    <%- body %>
+
+    <%- include('partials/footer') %>
+
+    <%- include('partials/addEvent') %>
+
+    <%- include('partials/search') %>  
+</body>
+</html>
+

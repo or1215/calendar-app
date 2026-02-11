@@ -1,0 +1,226 @@
+<main class="main-container">
+    <div class="updEvent-header">
+        <button id="updEvent-cancelBtn">キャンセル</button>
+        <div>予定を編集</div>
+        <button id="updEvent-updBtn">完了</button>
+    </div>
+    <div class="updEvent-container">
+        <div class="event-title">
+            <input type="text" id="event-title" placeholder="タイトル">
+        </div>
+        <div class="event-date">
+            <div class="upd-event-datetime-container">
+                <label>終日</label>
+                <label class="switch">
+                    <input type="checkbox" id="updEvent-toggle">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="upd-event-datetime-container">
+                <label>開始日時</label>
+                <input type="datetime-local" id="event-startDate">
+            </div>
+            <div class="upd-event-datetime-container">
+                <label>終了日時</label>
+                <input type="datetime-local" id="event-endDate">
+            </div>
+        </div>
+        <div class="event-labalColor">
+            <div class="left">
+                <label>ラベルカラー</label>
+            </div>
+            <div class="right">
+                <input type="color" value="#ff0000" id="labelColor">
+                <input type="text" placeholder="ラベル名" id="labelName">
+            </div>
+        </div>
+        <div class="event-text">
+            <input type="text" placeholder="URL" id="url">
+            <textarea placeholder="メモ" id="memo"></textarea>
+        </div>
+    </div>
+    <div class="event-delete">
+        <button id="updEvent-deleteBtn">予定を削除</button>
+    </div>
+</main>
+<script>
+const eventId = <%= id %>;
+const MONTH = <%= month %>;
+const DAY = <%= day %>;
+const schedules = <%- JSON.stringify(schedules) %>;
+const schedule = schedules[eventId];
+/* 入力一覧　*/
+const title = document.getElementById('event-title');
+const startDate = document.getElementById('event-startDate');
+const endDate = document.getElementById('event-endDate');
+const labelColor = document.getElementById('labelColor');
+const labelName = document.getElementById('labelName');
+const url = document.getElementById('url');
+const memo = document.getElementById('memo');
+const toggle = document.getElementById('updEvent-toggle')
+
+/*
+ * ------------------------------------------------------------------
+ * 初期処理
+ * ------------------------------------------------------------------
+ */
+document.addEventListener('DOMContentLoaded', () => {
+    initUpdScheduleForm();
+});
+
+/*
+ * ------------------------------------------------------------------
+ * 関数定義設定開始
+ * ------------------------------------------------------------------
+ */ 
+/* datetypeの判定　*/ 
+function getDateType(value) {
+    if (!value) return false;
+    if (/^\d{4}-\d{2}-\d{2}$/.test(value)) return true;
+    return false;
+}
+/* datetimeの判定 */
+function getDateTiemType(value) {
+    if (!value) return false;
+    // 秒あり／なし両対応
+    if (/^\d{4}-\d{2}-\d{2}[ T]\d{2}:\d{2}(:\d{2})?$/.test(value)) return true;
+    return false;
+}
+/* 初期化処理　*/
+function initUpdScheduleForm(){
+    if(getDateType(schedule.start_date)) {
+        startDate.type = 'date';
+        endDate.type  = 'date';
+        toggle.checked = true;
+    }else if(getDateTiemType(schedule.start_date)){
+        startDate.type = 'datetime-local';
+        endDate.type  = 'datetime-local';
+        toggle.checked = false;
+    }else{
+        console.err('dateTypeError')
+    }
+    title.value = schedule.title;
+    startDate.value = schedule.start_date;
+    endDate.value = schedule.end_date;
+    labelColor.value = schedule.label_color;
+    labelName.value = schedule.label_name;
+    url.value = schedule.url;
+    memo.value = schedule.memo;
+}
+/* 
+ * 更新処理の必須条件判定 
+ * 必須条件：タイトル/開始日時/終了日時
+ */
+function isUpdEvent(){
+    if(!title.value.trim()) return false;
+    if(!startDate.value)    return false;
+    if(!endDate.value)      return false;
+    return true;
+}
+/*
+ * ------------------------------------------------------------------
+ * 関数定義設定終了
+ * ------------------------------------------------------------------
+ */ 
+/*
+ * ------------------------------------------------------------------
+ * イベント処理設定開始
+ * ------------------------------------------------------------------
+ */ 
+/* ヘッダー処理 */
+const backBtn = document.getElementById('dateText');
+backBtn.addEventListener('click', () => {
+    location.href = `/day?year=${YEAR}&month=${MONTH}&day=${DAY}`;
+});
+/* 
+ * キャンセルボタン 
+ * 既存のデータに修正
+ */
+const cancelBtn = document.getElementById('updEvent-cancelBtn');
+cancelBtn.addEventListener('click', () => {
+    initUpdScheduleForm();
+    updateUpdButtonState();
+});
+/* 終日ボタン処理 */
+toggle.addEventListener('change', () => {
+    if(toggle.checked) {
+        startDate.type = 'date';
+        endDate.type  = 'date';
+    }
+    if(!toggle.checked) {
+        startDate.type = 'datetime-local';
+        endDate.type  = 'datetime-local';
+    }
+});
+/* 削除ボタン処理 */
+const deleteBtn = document.getElementById('updEvent-deleteBtn');
+deleteBtn.addEventListener('click', async () =>{
+    const isDelete = confirm('この予定を削除しますか？');
+    if (!isDelete) return;
+    try {
+        const response = await fetch('/api/deleteEvent', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                id: eventId
+            })
+        });
+        const result = await response.json();
+        if (!result.success) {
+            alert('削除に失敗しました');
+            return;
+        }
+        // 削除成功 → 月表示に戻る
+        location.href = `/day?year=${YEAR}&month=${MONTH}&day=${DAY}`;
+    } catch (err) {
+        console.error(err);
+        alert('通信エラーが発生しました');
+    }
+});
+/* 更新処理ボタン */
+const updBtn = document.getElementById('updEvent-updBtn');
+updBtn.addEventListener('click', async () =>{
+    if (!isUpdEvent()) return;
+    try {
+        const response = await fetch('/api/updateEvent', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                id: eventId,
+                title: title.value.trim(),
+                startDate: startDate.value,
+                endDate: endDate.value,
+                labelColor: labelColor.value || null,
+                labelName: labelName.value.trim() || null,
+                url: url.value.trim() || null,
+                memo: memo.value.trim() || null
+            })
+        });
+        if (!response.ok) throw new Error('更新に失敗しました');
+        const result = await response.json();
+        if (result.success) location.href = `/updEvent?year=${YEAR}&month=${MONTH}&day=${DAY}&id=${eventId}`;
+        else alert('予定の更新に失敗しました');
+
+    } catch (err) {
+        console.error(err);
+        alert('通信エラーが発生しました');
+    }
+});
+/* テキスト入力判定（完了設定) */
+function updateUpdButtonState() {
+    updBtn.style.display = isUpdEvent() ? '' : 'none';
+}
+[title, startDate, endDate].forEach(el => {
+    el.addEventListener('input', updateUpdButtonState);
+});
+/* 削除ボタン処理 */
+/*
+ * ------------------------------------------------------------------
+ * イベント処理設定終了
+ * ------------------------------------------------------------------
+ */ 
+</script>

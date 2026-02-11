@@ -1,0 +1,251 @@
+<main class="main-container">
+    <div class="date-container">
+    </div>
+    <div class="eventlist-container">
+    </div>
+</main>
+<script>
+let MONTH = <%= month %>;
+let DAY = <%= day %>;
+let DATE = `${YEAR}-${String(MONTH).padStart(2, '0')}-${String(DAY).padStart(2, '0')}`;
+
+/* 初期処理 */
+document.addEventListener('DOMContentLoaded', () => {
+
+    /* --- 選択された日付の表示生成開始 --- */
+    // 日付表示要素の取得
+    const dateCon = document.querySelector('.date-container');
+    // 日付の生成
+    const dateEl = createElementDateDisplay(YEAR,MONTH,DAY);
+    dateCon.appendChild(dateEl);
+    /* --- 選択された日付の表示生成終了 --- */
+
+    /* --- 表示されるイベントの生成開始 --- */
+    // イベント表示エリア要素の取得
+    const eventlistCon = document.querySelector('.eventlist-container');
+    /* 祝日データの処理 */
+    const holiday = getHolidaysByDate(YEAR,MONTH,DAY,HOLIDAYS);
+    if(holiday != null)  eventlistCon.appendChild(createElementHoliday(holiday));
+    /* スケジュールデータの処理 */
+    const schedules = getSchedulesByDate(YEAR,MONTH,DAY,SCHEDULES);
+    schedules.filter(schedule => schedule != null).forEach(schedule => {
+        eventlistCon.appendChild(createElementSchedules(schedule));
+    });
+    /* --- 表示されるイベントの生成終了 --- */
+});
+
+/*
+ * ------------------------------------------------------------------
+ * 関数定義設定開始
+ * ------------------------------------------------------------------
+ */ 
+/*
+ * ------------------------------------------------------------------
+ * 現在表示している日付を表示
+ * @param {number} year  年
+ * @param {number} month 月
+ * @param {number} day   日
+ * 
+ * @return div要素
+ * ------------------------------------------------------------------
+ */
+function createElementDateDisplay(year,month,day){
+    const dateEl = document.createElement('div');
+    dateEl.classList.add('date-display');
+    const dayOfWeek = getDayOfWeek(YEAR,MONTH,DAY);
+    dateEl.textContent = `${YEAR}年${MONTH}月${DAY}日・${dayOfWeek}曜日`;
+    return dateEl;
+}
+
+/**
+ * ------------------------------------------------------------------
+ * 年月日から曜日を取得する
+ * @param {number} year  年
+ * @param {number} month 月
+ * @param {number} day   日
+ * 
+ * @returns {string} 曜日
+ * ------------------------------------------------------------------
+ */
+function getDayOfWeek(year, month, day) {
+    const week = ['日', '月', '火', '水', '木', '金', '土'];
+    const date = new Date(year, month - 1, day); 
+    return week[date.getDay()];
+}
+
+/**
+ * ------------------------------------------------------------------
+ * 年月日からスケジュールデータの取得
+ * @param {number} year  年
+ * @param {number} month 月
+ * @param {number} day   日
+ * @param {Object} SCHEDULES スケジュールデータリスト
+ * 
+ * @returns {Array<Object>} スケジュールデータ配列
+ * ------------------------------------------------------------------
+ */
+function getSchedulesByDate(year, month, day, schedules) {
+    // YYYY-MM-DD 形式に変換（0埋め）
+    const targetDate = new Date(
+        `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`
+    );
+
+    // 予定データを配列で取得
+    return Object.values(schedules).filter(schedule => {
+        if (!schedule.start_date) return false;
+
+        const startDate = new Date(schedule.start_date);
+        const endDate = schedule.end_date
+            ? new Date(schedule.end_date)
+            : startDate;
+        startDate.setHours(0, 0, 0, 0);
+        endDate.setHours(23, 59, 59, 999);
+        return startDate <= targetDate && targetDate <= endDate;
+    });
+}
+
+/**
+ * ------------------------------------------------------------------
+ * 年月日から祝日データの取得
+ * @param {number} year  年
+ * @param {number} month 月
+ * @param {number} day   日
+ * @param {Object} HOLIDAYS 祝日データリスト
+ * 
+ * @returns {Object} 祝日データ
+ * ------------------------------------------------------------------
+ */
+function getHolidaysByDate(year, month, day, holidays) {
+    // YYYY-MM-DD 形式に変換（0埋め）
+    const key = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+    // 祝日が存在すれば配列で返す
+    if (holidays[key]) return [holidays[key]];
+    return null;
+}
+
+/**
+ * ------------------------------------------------------------------
+ * 祝日データを表示する要素の生成
+ * @param {Object} HOLIDAY 祝日データ
+ * 
+ * @returns {Object} イベント要素
+ * ------------------------------------------------------------------
+ */
+function createElementHoliday(holiday) {
+    const element = document.createElement('div');
+    element.classList.add('event-container');
+    /* 祝日を表すイメージ生成 */
+    const holidayImg = document.createElement('div');
+    holidayImg.classList.add('holidayImg');
+    holidayImg.textContent = '★';
+    element.appendChild(holidayImg);
+    /* 祝日タイトルの生成 */
+    const titleEl = document.createElement('div');
+    titleEl.classList.add('event-title');
+    titleEl.textContent = holiday
+    element.appendChild(titleEl);
+    /**/
+    const holidayText = document.createElement('div');
+    holidayText.classList.add('holiday-text');
+    holidayText.textContent = '祝日';
+    element.appendChild(holidayText);
+
+    return element;
+}
+
+/**
+ * ------------------------------------------------------------------
+ * スケジュールを表示要素の生成
+ * @param {Object} schedule スケジュール
+ * 
+ * @returns {Object} スケジュール要素
+ * ------------------------------------------------------------------
+ */
+function createElementSchedules(schedule) {
+    const element = document.createElement('div');
+    element.classList.add('event-container');
+    /* スケジュールタイトルの生成*/
+    const titleEl = document.createElement('div');
+    titleEl.classList.add('event-title');
+    titleEl.textContent = schedule.title;
+    titleEl.style.borderLeft = `8px solid ${schedule.label_color}`;
+    element.appendChild(titleEl);
+    /* 開始/終了時刻の生成　*/
+    /**
+     * ルール
+     * ①　開始/終了時刻が同じの場合：開始/終了時刻を表示
+     * ②　開始/終了時刻のみ　　　　：開始/終了のどちらかを表示
+     * ③　開始/終了時刻がない　　　：未定
+     */
+    const timeEl = document.createElement('div');
+    timeEl.classList.add('event-time');
+
+    /* 日付/時刻取得 */
+    const startDate = schedule.start_date.slice(0,10);
+    const endDate = schedule.end_date.slice(0,10);
+    const startTime = schedule.start_date.slice(11);
+    const endTime = schedule.end_date.slice(11);
+    /* 時刻表示設定 */
+    if(startDate == endDate){
+        if(startTime != '' && endTime != ''){
+            const stratEl = document.createElement('div');
+            stratEl.textContent = `開始時刻：${startTime}`;
+            timeEl.appendChild(stratEl);
+            const endEl = document.createElement('div');
+            endEl.textContent = `終了時刻：${endTime}`;
+            timeEl.appendChild(endEl);
+        }
+    }else if(startDate == DATE){
+        if(startTime != '') {
+            const stratEl = document.createElement('div');
+            stratEl.textContent = `開始時刻：${startTime}`;
+            timeEl.appendChild(stratEl);
+        }
+    }else if(endDate == DATE){
+        if(endTime != '') {
+            const endEl = document.createElement('div');
+            endEl.textContent = `終了時刻：${endTime}`;
+            timeEl.appendChild(endEl);
+        }
+    }else{
+        const formatDateTime = (date) => {
+            if (!date) return '';
+            return date.replace('T', ' ');
+        };
+        const stratEl = document.createElement('div');
+        stratEl.textContent = `開始：${formatDateTime(schedule.start_date)}`;
+        timeEl.appendChild(stratEl);
+        const endEl = document.createElement('div');
+        endEl.textContent = `終了：${formatDateTime(schedule.end_date)}`;
+        timeEl.appendChild(endEl);
+    }
+    console.log(DAY)
+    element.addEventListener('click', () =>{
+        location.href = `/updEvent?year=${YEAR}&month=${MONTH}&day=${DAY}&id=${schedule.id}`;
+    });
+
+    element.appendChild(timeEl);
+    return element;
+}
+/*
+ * ------------------------------------------------------------------
+ * 関数定義設定終了
+ * ------------------------------------------------------------------
+ */
+
+/*
+ * ------------------------------------------------------------------
+ * イベント処理設定開始
+ * ------------------------------------------------------------------
+ */ 
+/* ヘッダー処理 */
+const backBtn = document.getElementById('dateText');
+backBtn.addEventListener('click', () =>{
+    location.href = `/month?year=${YEAR}&month=${MONTH}`;
+});
+/*
+ * ------------------------------------------------------------------
+ * イベント処理設定終了
+ * ------------------------------------------------------------------
+ */ 
+</script>

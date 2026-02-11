@@ -1,0 +1,138 @@
+<section class="search">
+    <div class="search-container">
+        <div class="search-input-wrapper">
+            <input type="text" placeholder="🔍検索...">
+            <button class="clear-btn" id="clear">×</button>
+        </div>
+        <button id="cancel" class="cancel-btn">キャンセル</button>
+    </div>
+    <div class="search-list"></div>
+</section>
+<script>
+/* 検索入力フィールドの参照を取得 */
+const searchSection = document.querySelector('.search');
+const searchInput = searchSection.querySelector('input[type="text"]');
+
+/* --- ヘッダーの検索ボタンの処理定義 --- */
+/* ヘッダーの検索ボタンと連携するためのスクリプト */
+const searchButton = document.querySelector('.search-button');
+/* ヘッダーの検索ボタンが押されたときの処理 */
+searchButton.addEventListener('click', () => {
+    if(searchSection) searchSection.classList.add("active");
+    const query = searchInput.value.trim();
+});
+
+/* --- 検索セクション内のボタン処理定義 --- */
+/* キャンセルボタンが押されたときの処理 */
+const cancelButton = document.getElementById('cancel');
+cancelButton.addEventListener('click', () => {
+    if(searchSection) searchSection.classList.remove("active");
+});
+
+/* クリアボタンが押されたときの処理 */
+const clearButton = document.getElementById('clear');
+clearButton.addEventListener('click', () => {
+    searchInput.value = '';
+    const searchList = searchSection.querySelector('.search-list');
+    if(searchList) searchList.innerHTML = '';
+    if(searchSection) searchSection.style.height = '135px';
+});
+
+/* 検索入力処理 */
+searchInput.addEventListener('input', () => {
+
+    // サーチセッションを全表示
+    if(searchSection) searchSection.style.height = '100%';
+
+    const searchList = searchSection.querySelector('.search-list');
+    const text = searchInput.value.trim().toLowerCase();
+
+    // 初期化
+    searchList.innerHTML = '';
+
+    // 空文字なら何も表示しない
+    if (!text) return;
+
+    let hitCount = 0;
+
+    // SCHEDULES を全走査
+    Object.entries(SCHEDULES).forEach(([id, schedule]) => {
+
+        if (schedule.title.toLowerCase().includes(text)) {
+
+            hitCount++; // ヒット件数
+
+            /* --- イベントの作成開始 --- */
+            const item = document.createElement('div');
+            item.classList.add('search-item');
+            // 日付は start_date から取得
+            const date = schedule.start_date?.split('T')[0] ?? '';
+            // 日付の設定
+            const dateEl = createElementDate(date);
+            // タイトルの設定
+            const titleEl = createElemenTitle(schedule);
+            // 日付 → タイトルの順に表示
+            item.appendChild(dateEl);
+            item.appendChild(titleEl);
+            createAddEvent(schedule,item);
+            /* --- イベントの作成終了 --- */
+
+            searchList.appendChild(item);
+        }
+    });
+
+    // ヒットなし
+    if (hitCount === 0) {
+        searchList.innerHTML = `<div class="search-empty">該当する予定はありません</div>`;
+    }
+});
+
+/*
+ * ------------------------------------------------------------------
+ * 日付要素の作成
+ * @param {number} date  yyyy-mm-dd
+ * 
+ * @return div要素
+ * ------------------------------------------------------------------
+ */
+function createElementDate(date) {
+    const dateEl = document.createElement('div');
+    dateEl.classList.add('search-item-date');
+    dateEl.textContent = date;
+    return dateEl;
+}
+/*
+ * ------------------------------------------------------------------
+ * タイトル要素の作成
+ * @param {Object} schedule  
+ * 
+ * @return div要素
+ * ------------------------------------------------------------------
+ */
+function createElemenTitle(schedule) {
+    const titleEl = document.createElement('div');
+    titleEl.classList.add('search-item-title');
+    titleEl.textContent = schedule.title
+    titleEl.style.borderLeft = `6px solid ${schedule.label_color}`;
+    return titleEl;
+}
+
+/*
+ * ------------------------------------------------------------------
+ * データ保持要素の作成
+ * @param {Object} schedule  
+ * @param {element} item
+ * 
+ * @return input[hidden]要素
+ * ------------------------------------------------------------------
+ */
+function createAddEvent(schedule,element){
+    element.addEventListener('click', ()=>{
+            const startDate = new Date(schedule.start_date);
+            const year = startDate.getFullYear();
+            const month = startDate.getMonth() + 1;
+            const day = startDate.getDate();
+            location.href = `/updEvent?year=${year}&month=${month}&day=${day}&id=${schedule.id}`;
+    });
+}
+</script>

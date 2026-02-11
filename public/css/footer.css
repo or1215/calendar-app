@@ -1,0 +1,52 @@
+.footer-container {
+    background-color: #f8f9fa;
+    display: flex;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100px;
+    position: fixed;
+    z-index: 1000;
+}
+
+.footer-container .left-section{
+    width: 50%;
+    display: flex;
+}
+.footer-container .left-section .today-button{
+    padding: 24px 48px;
+    border: none;
+    background: none;
+    color: red;
+    font-size: 24px;
+    cursor: pointer;
+    border-radius: 12px;
+}
+
+.footer-container .right-section{
+    width: 50%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+}
+
+/* ========================================
+   横向き（ランドスケープ）
+======================================== */
+@media (orientation: landscape) {
+    .footer-container {
+        display: none;
+    }
+    .nav-back-button {
+        display: none;
+    }
+}
+
+/* ========================================
+   縦向き（portrait）
+======================================== */
+@media (orientation: portrait) {
+    .footer-container{
+        display: flex;
+    }
+}

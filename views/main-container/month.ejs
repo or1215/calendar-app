@@ -1,0 +1,407 @@
+
+<main class="main-container">
+    <div class="month-container">
+        <div class="month-display">
+            <div class="month-text" id="monthText"><%= month %>月</div>
+            <div class="year-month-text" id="yearMonthText"><%= year %>年<%= month %>月</div>
+        </div>
+        <div class="day-display">
+            <div class="day-main" id="day-main">
+            </div>
+        </div>
+    </div>
+    <div class="event-list" id="event-list">
+
+    </div>
+</main>
+<script>
+/**
+ * ------------------------------------------------------------------
+ * 定数宣言設定開始
+ * ------------------------------------------------------------------
+ */ 
+const calendar = document.getElementById("day-main");
+let MONTH = <%= month %>;     // 表示する月のデータ
+
+/* 予定データの加工処理 */
+Object.entries(<%- JSON.stringify(schedules) %>).forEach(([id, schedule]) => {
+    if (!schedule.start_date) return;
+    const startDate = new Date(schedule.start_date);
+    const endDate = schedule.end_date
+        ? new Date(schedule.end_date)
+        : new Date(schedule.start_date); // 終了日なしは開始日のみ
+    // 時刻を正規化
+    startDate.setHours(0, 0, 0, 0);
+    endDate.setHours(0, 0, 0, 0);
+    // 開始日〜終了日まで1日ずつ回す
+    for (
+        let d = new Date(startDate);
+        d <= endDate;
+        d.setDate(d.getDate() + 1)
+    ) {
+        const yyyy = d.getFullYear();
+        const mm = String(d.getMonth() + 1).padStart(2, '0');
+        const dd = String(d.getDate()).padStart(2, '0');
+        const dayKey = `${yyyy}-${mm}-${dd}`;
+        if (!SCHEDULES[dayKey]) SCHEDULES[dayKey] = [];
+        SCHEDULES[dayKey].push({
+            id,
+            title: schedule.title,
+            labelColor: schedule.label_color,
+            startDate: schedule.start_date,
+            endDate: schedule.end_date
+        });
+    }
+});
+
+/**
+ * ------------------------------------------------------------------
+ * 定数宣言設定終了
+ * ------------------------------------------------------------------
+ */ 
+
+/**
+ * ------------------------------------------------------------------
+ * 関数宣言設定開始
+ * ------------------------------------------------------------------
+ */ 
+/*
+ * ------------------------------------------------------------------
+ * 年月に合わせてーブルの作成
+ * @param {number} year  年
+ * @param {number} month 月
+ * 
+ * @return table要素
+ * ------------------------------------------------------------------
+ */
+function createCalendarTable() {
+    // 曜日の表示順
+    const days = ["日", "月", "火", "水", "木", "金", "土"];
+    // 祝日データ
+    const dayTable = document.createElement("table");
+    /* ---------- thead生成 ---------- */
+    createThead(dayTable,days);
+    /* ---------- tbody生成  ---------- */
+    createTbody(dayTable)
+    return dayTable;
+}
+
+/*
+ * ------------------------------------------------------------------
+ * thead生成
+ * @param {HTMLTableElement} dayTable able 要素
+ * @param {string[]} days            曜日配列
+ *
+ * @return {} なし
+ * ------------------------------------------------------------------
+ */
+function createThead(dayTable,days){
+    const thead   = document.createElement("thead");
+    const headRow = document.createElement("tr");
+    // 各曜日の生成
+    // <tr><th><p></p></th></tr>の構成
+    days.forEach(day => {
+        const th = document.createElement("th");
+        const p = document.createElement("p");
+        p.textContent = day;
+        th.appendChild(p);
+        headRow.appendChild(th);
+    });
+    thead.appendChild(headRow);
+    dayTable.appendChild(thead);
+}
+
+/*
+ * ------------------------------------------------------------------
+ * tbody生成
+ * @param {HTMLTableElement} dayTable table 要素
+ * 
+ * @return {} なし
+ * ------------------------------------------------------------------
+ */
+function createTbody(dayTable){
+    const tbody = document.createElement("tbody");
+    // 月初の曜日
+    const firstDay = new Date(YEAR, MONTH - 1, 1).getDay(); 
+    // 月末日
+    const lastDate = new Date(YEAR, MONTH, 0).getDate();   
+    // 処理する日付
+    let date = 1;   
+    let tr = document.createElement("tr");
+    // 月初前の処理　空白で生成する
+    for (let i = 0; i < firstDay; i++) tr.appendChild(document.createElement("td"));
+    // 日付セル
+    while (date <= lastDate) {
+        const td = document.createElement("td");
+        /* ---------- 日付テキスト生成開始  ---------- */
+        const dayDiv = document.createElement("div");
+        dayDiv.classList.add("day-text");
+        dayDiv.textContent = date;
+        // 今日の日付の場合、背景色を変更
+        const today = new Date();
+        if (YEAR === today.getFullYear() && MONTH === today.getMonth() + 1 && date === today.getDate()) {
+            dayDiv.style.backgroundColor = "#ff7070";
+        }
+        td.appendChild(dayDiv);
+        /* ---------- 日付テキスト生成終了  ---------- */
+        /* ---------- スケジュールリスト生成開始  ---------- */
+        const schedulesListDiv = document.createElement("div");
+        schedulesListDiv.classList.add("schedules-list");
+        // 日付の生成 'yyyy-MM-dd'形式
+        const dateText = 
+              YEAR + "-" 
+            + String(MONTH).padStart(2, "0") + "-" 
+            + String(date).padStart(2, "0");
+        // 予定ラベル生成
+        if(hasSchedules(dateText)) setSchedulesDiv(schedulesListDiv,SCHEDULES[dateText]);
+        // 休日ラベル生成
+        if(hasHoliday(dateText)) dayDiv.style.color = '#fcac00';
+        td.appendChild(schedulesListDiv);
+        const currentDate = date;
+        td.addEventListener("click", () =>{
+            location.href = `/day?year=${YEAR}&month=${MONTH}&day=${currentDate}`;
+        });
+        /* ---------- スケジュールリスト生成終了  ---------- */
+        tr.appendChild(td);
+        // 最終曜日で開業
+        if (tr.children.length === 7) {
+            tbody.appendChild(tr);
+            tr = document.createElement("tr");
+        }
+        date++;
+    }
+    // 残りセルがあれば追加
+    if (tr.children.length > 0) {
+        while (tr.children.length < 7) {
+            tr.appendChild(document.createElement("td"));
+        }
+        tbody.appendChild(tr);
+    }
+    dayTable.appendChild(tbody);
+}
+/**
+ * ------------------------------------------------------------------
+ * スケジュールリストの生成
+ * 
+ * @param {String} dateText 祝日の日付データ
+ * ------------------------------------------------------------------
+ */
+setSchedulesList();
+function setSchedulesList(){
+    const eventlist = document.getElementById('event-list');
+    /* スケジュールリストから一致するイベントの取得 */
+    const schedules = getSchedulesByDate(YEAR,MONTH,SCHEDULES);
+    schedules.filter(schedule => schedule != null).forEach(schedule => {
+        const eventItem = document.createElement('div');
+        eventItem.textContent = schedule.title;
+        eventItem.style.borderLeft = `2px solid ${schedule.label_color}`;
+        eventItem.classList.add('event-item');
+        eventItem.addEventListener('click', ()=> {
+            const startDate = new Date(schedule.start_date);
+            const day = startDate.getDate();
+            location.href = `/updEvent?year=${YEAR}&month=${MONTH}&day=${day}&id=${schedule.id}`;
+        });
+        eventlist.appendChild(eventItem);
+    });
+}
+/**
+ * ------------------------------------------------------------------
+ * 年月のスケジュールデータの取得
+ * @param {number} year  年
+ * @param {number} month 月
+ * @param {Object} SCHEDULES スケジュールデータリスト
+ * 
+ * @returns {Array<Object>} スケジュールデータ配列
+ * ------------------------------------------------------------------
+ */
+function getSchedulesByDate(year, month, schedules) {
+    // YYYY-MM-DD 形式に変換（0埋め）
+    const targetStartDate = new Date(year, month - 1, 1, 0, 0, 0, 0);
+    const targetEndDate   = new Date(year, month,     1, 0, 0, 0, 0);
+
+    // 予定データを配列で取得
+    return Object.values(schedules).filter(schedule => {
+        if (!schedule.start_date) return false;
+
+        const startDate = new Date(schedule.start_date);
+        const endDate = schedule.end_date
+            ? new Date(schedule.end_date)
+            : startDate;
+        startDate.setHours(0, 0, 0, 0);
+        endDate.setHours(23, 59, 59, 999);
+        return startDate < targetEndDate && endDate >= targetStartDate;
+    });
+}
+/**
+ * ------------------------------------------------------------------
+ * 祝日ラベルの生成
+ * 
+ * @param {HTMLDivElement} schedulesListDiv 予定を表示するリスト要素
+ * @param {String} dateText 祝日の日付データ
+ * ------------------------------------------------------------------
+ */
+function setHolidayDiv(schedulesListDiv,dateText){
+    const holidayDiv = document.createElement("div");
+    holidayDiv.classList.add("holiday");
+    holidayDiv.title = HOLIDAYS[dateText];
+    schedulesListDiv.appendChild(holidayDiv);
+}
+/**
+ * ------------------------------------------------------------------
+ * 祝日日判定
+ * 
+ * @param {String} dateText 日付を表す文字列'例:yyyy-M-d'
+ * @return {Boolean} 休日の判定'true:祝日の場合,false:そうではない場合
+ * ------------------------------------------------------------------
+ */
+function hasHoliday(dateText){
+    if(HOLIDAYS[dateText] == undefined) return false;
+    return true;
+}
+/**
+ * ------------------------------------------------------------------
+ * スケジュールラベルの生成
+ * 
+ * @param {HTMLDivElement} schedulesDiv スケジュールを表示するリスト要素
+ * @param {Object[]} schedules スケジュールデータ配列
+ * ------------------------------------------------------------------
+ */
+function setSchedulesDiv(schedulesDiv,schedules){
+    schedules.forEach(schedule => {
+        const scheduleDiv = document.createElement("div");
+        scheduleDiv.classList.add("schedules");
+        scheduleDiv.title = schedule.title;
+        // ラベルカラーの設定
+        if(schedule.labelColor != null){
+            scheduleDiv.style.backgroundColor = schedule.labelColor;
+        }else{
+            scheduleDiv.style.backgroundColor = "#808080";
+        }
+        schedulesDiv.appendChild(scheduleDiv);
+    });
+}
+/**
+ * ------------------------------------------------------------------
+ * スケジュール判定
+ * 
+ * @param {String} dateText 日付を表す文字列'例:yyyy-M-d'
+ * @return {Boolean} 予定の有無'true:予定あり,false:予定なし'
+ * ------------------------------------------------------------------
+ */
+function hasSchedules(dateText){
+    if(SCHEDULES[dateText] != undefined) return true;
+    return false;
+}
+/**
+ * ------------------------------------------------------------------
+ * 年月減算処理
+ * ------------------------------------------------------------------
+ */
+function onYearMonthUp() {
+    if(MONTH == 1) {
+        MONTH = 12;
+        YEAR = YEAR - 1;
+    } else {
+        MONTH = MONTH - 1;
+    }
+    updateYearMonth();
+}
+/**
+ * ------------------------------------------------------------------
+ * 年月加算処理
+ * ------------------------------------------------------------------
+ */
+function onYeaMonthrDown() {
+    if(MONTH == 12) {
+        MONTH = 1;
+        YEAR = YEAR + 1;
+    } else {
+        MONTH = MONTH + 1;
+    }
+    updateYearMonth();
+}
+
+/**
+ * ------------------------------------------------------------------
+ * 表示されている年月の更新処理
+ * ------------------------------------------------------------------
+ */
+function updateYearMonth() {
+    document.getElementById("yearText").textContent = `＜${YEAR}年`;
+    document.getElementById("monthText").textContent = `${MONTH}月`;
+    document.getElementById("yearMonthText").textContent = `${YEAR}年${MONTH}月`;
+    resetCalender();
+}
+
+/**
+ * ------------------------------------------------------------------
+ * 表示されている月の曜日をリセット処理
+ * ------------------------------------------------------------------
+ */
+function resetCalender() {
+    const table = calendar.querySelector("table");
+    if (!table) return;
+    table.querySelector("tbody").remove();    
+    createTbody(table);
+}
+
+/**
+ * ------------------------------------------------------------------
+ * 関数宣言設定終了
+ * ------------------------------------------------------------------
+ */
+
+/**
+ * ------------------------------------------------------------------
+ * イベント処理設定開始
+ * ------------------------------------------------------------------
+ */ 
+/* ヘッダー処理 */
+const yearText = document.getElementById("yearText");
+yearText.addEventListener("click", () => {
+    location.href = `/year?year=${YEAR}`;
+});
+
+/* メイン処理 */
+const container = document.querySelector(".day-display");
+// スワイプ判定用：ポインター押下時の開始座標を保持
+container.addEventListener("pointerdown", (e) => {
+    startY = e.clientY;
+    startX = e.clientX;
+});
+
+// 年月変換処理
+container.addEventListener("pointerup", (e) => {
+    const endY = e.clientY;
+    const endX = e.clientX;
+
+    const diffY = endY - startY;
+    const diffX = endX - startX;
+
+    // 少しの動きは無視（誤動作防止）
+    if (Math.abs(diffY) < 50) return;
+
+    // 縦方向の動きがメインのときだけ反応
+    if (Math.abs(diffY) > Math.abs(diffX)) {
+        if (diffY < 0) {
+            // 上スワイプ → 年を減らす
+            onYearMonthUp();
+        } else {
+            // 下スワイプ → 年を増やす
+            onYeaMonthrDown();
+        }
+    }
+});
+/**
+ * ------------------------------------------------------------------
+ * イベント処理設定終了
+ * ------------------------------------------------------------------
+ */ 
+
+/**
+ * ------------------------------------------------------------------
+ * 起動時処理設定
+ * ------------------------------------------------------------------
+ */ 
+calendar.appendChild(createCalendarTable());
+</script>
