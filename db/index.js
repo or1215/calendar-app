@@ -1,21 +1,17 @@
-const Database = require("better-sqlite3");
+require('dotenv').config();
+const env = process.env.NODE_ENV || 'development';
 
-const db = new Database("database.db");
+let db;
 
-// テーブル作成（起動時1回）
-db.exec(`
-  CREATE TABLE IF NOT EXISTS schedules (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    title TEXT NOT NULL,
-    start_date TEXT NOT NULL,
-    end_date   TEXT NOT NULL,
-    label_color TEXT,
-    label_name TEXT,
-    url TEXT,
-    memo TEXT,
-    created_at TEXT NOT NULL DEFAULT (datetime('now','localtime')),
-    updated_at TEXT NOT NULL DEFAULT (datetime('now','localtime'))
-  )
-`);
+if (env === 'production') {
+  const { Pool } = require('pg');
+  db = new Pool({
+    connectionString: process.env.DATABASE_URL,
+    ssl: { rejectUnauthorized: false }
+  });
+} else {
+  const Database = require('better-sqlite3');
+  db = new Database(process.env.DB_PATH || './database.db');
+}
 
 module.exports = db;

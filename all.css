@@ -1,0 +1,1555 @@
+/* ----------------------------------------------------
+ 邵ｦ蜷代″・・ortrait・俄ｻ 竭｡繝吶・繧ｹ
+---------------------------------------------------- */
+@media (orientation: portrait) {
+
+    /**
+    * addEvent.css
+    * 譁ｰ隕上う繝吶Φ繝郁ｿｽ蜉逕ｨ繝｢繝ｼ繝繝ｫ縺ｮ繧ｹ繧ｿ繧､繝ｫ
+    */
+    .add-event{
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 9999;
+        width: 100%;
+        align-items: center;
+        border: 3px solid #ccc;
+        padding: 24px;
+        background-color: #f0f0f0;
+
+        /* 繧｢繝九Γ繝ｼ繧ｷ繝ｧ繝ｳ */
+        transform: translateY(-100%);
+        opacity: 0;
+        transition: transform 0.6s ease, opacity 0.6s ease;
+        pointer-events: none;
+    }
+
+    .add-event.active{
+        transform: translateY(0);
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    /* 繝倥ャ繝繝ｼ驛ｨ蛻・*/
+    .add-event .add-event-header{
+        width: 100%;
+        height: 60px;
+        margin-bottom: 12px;
+        display: grid;
+        grid-template-columns: 20% 60% 20%;
+        padding: 24px;
+    }
+    .add-event .add-event-header button{
+        width: 100%;
+        height: 100%;
+        font-size: 36px;
+        background: none;
+        color: red;
+        border: none;
+        cursor: pointer;
+    }
+    .add-event .add-event-header div{
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 48px;
+        font-weight: bold;
+    }
+
+    /* 繧､繝吶Φ繝医ち繧､繝医Ν蜈･蜉幃Κ蛻・*/
+    .add-event-body{
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .add-event-body .add-event-title{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .add-event-body .add-event-title input[type="text"]{
+        height: 60px;
+        width: 80%;
+        font-size: 36px;
+        font-weight: bold;
+        color: #000000;
+        padding: 12px;
+        border-radius: 36px;
+        padding-left: 24px;
+    }
+
+    /* 繧､繝吶Φ繝域律譎る∈謚樣Κ蛻・*/
+    .add-event-body .add-event-datetime{
+        width: 80%;
+        border-radius: 24px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin: 24px 0;
+        background-color: #ffffff;
+        padding: 24px 0;
+    }
+    .add-event-body .add-event-datetime .add-event-datetime-container{
+        margin: 24px 0;
+        width: 80%;
+        display: grid;
+        grid-template-columns: 40% 60%;
+        align-items: center;
+        justify-content: center;
+        border-bottom: 2px solid #ccc;
+        padding: 12px;
+    }
+    .add-event-datetime-container label{
+        font-size: 36px;
+        font-weight: bold;
+        color: #000000;
+        margin-right: 12px;
+        text-align: left;
+    }
+    .add-event-datetime-container input[type="datetime-local"]{
+        height: 48px;
+        width: 90%;
+        font-size: 24px;
+        padding: 6px 12px;
+        border-radius: 12px;
+        border: 2px solid #ccc;
+        color: #000000;
+        padding: 12px;
+    }
+    .add-event-datetime-container input[type="date"]{
+        height: 48px;
+        width: 90%;
+        font-size: 24px;
+        padding: 6px 12px;
+        border-radius: 12px;
+        border: 2px solid #ccc;
+        color: #000000;
+        padding: 12px;
+    }
+
+    /* 繝医げ繝ｫ繧ｹ繧､繝・メ險ｭ螳・*/
+    .switch {
+        position: relative;
+        width: 100px;
+        height: 60px;
+        justify-self: end; 
+    }
+    /* checkbox繧帝國縺・*/
+    .switch input[type="checkbox"] {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+    /* 閭梧勹 */
+    .slider {
+        position: absolute;
+        inset: 0;
+        background-color: #ccc;
+        border-radius: 36px;
+        transition: 0.3s;
+    }
+    /* 縺､縺ｾ縺ｿ */
+    .slider::before {
+        content: "";
+        position: absolute;
+        height: 52px;
+        width: 52px;
+        left: 4px;
+        top: 4px;
+        background-color: #fff;
+        border-radius: 50%;
+        transition: 0.3s;
+    }
+    /* ON迥ｶ諷・*/
+    .switch input:checked + .slider {
+        background-color: #4caf50;
+    }
+    .switch input:checked + .slider::before {
+        transform: translateX(42px);
+    }
+
+    /* 繧､繝吶Φ繝医Λ繝吶Ν繧ｫ繝ｩ繝ｼ驕ｸ謚樣Κ蛻・*/
+    .add-event-body .add-event-label-color{
+        width: 80%;
+        display: grid;
+        grid-template-columns: 40% 60%;
+        justify-content: center;
+        align-items: center;
+        margin: 24px 0;
+        background-color: #ffffff;
+        border-radius: 36px;
+        padding: 24px;
+    }
+    .add-event-label-color .left{
+        display: flex;
+        justify-content: left;
+        align-items: center;
+    }
+    .add-event-label-color .right{
+        display: flex;
+        justify-content: left;
+        align-items: center;
+        gap: 12px;
+    }
+    .add-event-body .add-event-label-color .left label{
+        font-size: 24px;
+        font-weight: bold;
+        color: #000000;
+        margin-left: 24px;
+    }
+    .add-event-label-color .right input[type="color"]{
+        height: 50px;
+        width: 50px;
+        border-radius: 50%;
+        border: 2px solid #ccc;
+    }
+    .add-event-label-color .right input[type="text"]{
+        height: 48px;
+        width: 70%;
+        font-size: 24px;
+        padding: 6px 12px;
+        border-radius: 12px;
+        border: none;
+        color: #000000;
+    }
+
+    /* 繧､繝吶Φ繝医Γ繝｢蜈･蜉幃Κ蛻・*/
+    .add-event-body .add-event-memo{
+        width: 80%;
+        background-color: #ffffff;
+        border-radius: 36px;
+        padding: 24px;
+        height: 500px;
+    }
+    .add-event-memo input[type="text"]{
+        width: 100%;
+        font-size: 24px;
+        padding: 12px;
+        border: none;
+        color: #000000;
+        resize: none;
+        padding: 12px;
+        margin: 12px 0;
+        border-bottom: 2px solid #ccc;
+    }
+    .add-event-memo textarea{
+        width: 100%;
+        height: 70%;
+        font-size: 24px;
+        padding: 12px;
+        border: none;
+        color: #000000;
+        resize: none;
+        padding: 12px;
+        margin-top: 12px;
+        border-bottom: 2px solid #ccc;
+    }
+}
+
+/* ----------------------------------------------------
+ 讓ｪ蜷代″・・andscape・・
+---------------------------------------------------- */
+@media (orientation: landscape) {
+
+    /* 譁ｰ隕上う繝吶Φ繝郁ｿｽ蜉繝｢繝ｼ繝繝ｫ */
+    .add-event {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        background-color: #f0f0f0;
+        padding: 12px;
+        transform: translateY(-100%);
+        opacity: 0;
+        transition: transform .4s ease, opacity .4s ease;
+        pointer-events: none;
+    }
+    .add-event.active {
+        transform: translateY(0);
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    /* 繝倥ャ繝繝ｼ */
+    .add-event-header {
+        flex-shrink: 0;
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        align-items: center;
+        padding: 8px 12px;
+        border-radius: 12px;
+        margin-bottom: 8px;
+    }
+    .add-event-header button {
+        background: none;
+        border: none;
+        font-size: 16px;
+        color: #007aff;
+        cursor: pointer;
+    }
+    .add-event-header div {
+        text-align: center;
+        font-weight: bold;
+        font-size: 16px;
+    }
+
+    /* 繝懊ョ繧｣・医せ繧ｯ繝ｭ繝ｼ繝ｫ鬆伜沺・・*/
+
+    .add-event-body {
+        flex: 1;
+        overflow-y: auto;
+        overflow-x: none;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        padding-bottom: 24px;
+    }
+
+    /* 繧ｿ繧､繝医Ν */
+    .add-event-body .add-event-title{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .add-event-title input {
+        width: 90%;
+        font-size: 20px;
+        padding: 14px 18px;
+        border-radius: 16px;
+        border: 1px solid #ccc;
+        outline: none;
+    }
+
+    /* 譌･譎・*/
+    .add-event-datetime {
+        background: #fff;
+        border-radius: 16px;
+        padding: 12px;
+        width: 90%;
+        margin: 0 auto;
+    }
+    .add-event-datetime-container {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        align-items: center;
+        padding: 10px 0;
+        border-bottom: 1px solid #eee;
+    }
+    .add-event-datetime-container:last-child {
+        border-bottom: none;
+    }
+    .add-event-datetime-container label {
+        font-size: 14px;
+    }
+    .add-event-datetime-container input {
+        font-size: 14px;
+        padding: 8px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+    }
+
+    /* 繝医げ繝ｫ */
+    .switch {
+        width: 52px;
+        height: 28px;
+        position: relative;
+    }
+    .switch input {
+        display: none;
+    }
+    .slider {
+        position: absolute;
+        inset: 0;
+        background: #ccc;
+        border-radius: 14px;
+        transition: .3s;
+    }
+    .slider::before {
+        content: "";
+        position: absolute;
+        width: 22px;
+        height: 22px;
+        left: 3px;
+        top: 3px;
+        background: #fff;
+        border-radius: 50%;
+        transition: .3s;
+    }
+    .switch input:checked + .slider {
+        background: #4caf50;
+    }
+    .switch input:checked + .slider::before {
+        transform: translateX(24px);
+    }
+
+    /* 繝ｩ繝吶Ν */
+    .add-event-label-color {
+        background: #fff;
+        border-radius: 16px;
+        padding: 12px;    
+        display: grid;
+        grid-template-columns: 60% 40%;
+        flex-direction: column;
+        gap: 8px;
+        width: 90%;
+        margin: 0 auto;
+    }
+    .add-event-label-color .left{
+        display: flex;
+        justify-content: left;
+        align-items: center;
+    }
+    .add-event-label-color .right {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+    .add-event-label-color .right input[type="color"]{
+        height: 30px;
+        width: 30px;
+        border-radius: 50%;
+        border: 2px solid #ccc;
+    }
+    .add-event-label-color .right input[type="text"]{
+        height: 24px;
+        width: 70%;
+        font-size: 24px;
+        padding: 6px 12px;
+        border-radius: 12px;
+        border: none;
+        color: #000000;
+    }
+
+    /* 繝｡繝｢ */
+
+    .add-event-memo {
+        background: #fff;
+        border-radius: 16px;
+        padding: 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        width: 90%;
+        margin: 0 auto;
+    }
+    .add-event-memo input,
+    .add-event-memo textarea {
+        font-size: 14px;
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+    }
+    .add-event-memo textarea {
+        min-height: 120px;
+        resize: vertical;
+    }
+}
+.search-button{
+    width: 100%;
+    height: 100%;
+    background-image: url('../img/serach_button.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.event-add-button{
+    width: 100%;
+    height: 100%;
+    background-image: url('../img/event_add_buttton.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+.main-container{
+    background-color: #ffffff;
+}
+
+.nav-back-button{
+    font-size: 36px;
+    font-weight: bold;
+    background:none;
+    color: red;
+    border: none;
+}
+
+.date-container {
+    width: 100%;
+    height: auto;
+    padding: 12px;
+    margin: 12px;
+
+    font-size: 24px;
+    font-weight: bold;
+    border-bottom: 6px solid #e0e0e0;
+}
+
+.eventlist-container {
+    width: 100%;
+    height: 100%;
+}
+.eventlist-container .event-container {
+    width: 90%;
+    margin: 24px 36px;
+    padding: 24px;
+    display: flex;
+    gap: 12px;
+    border-bottom: 2px solid #e0e0e0;
+}
+.eventlist-container .event-title {
+    padding: 12px 24px;
+    font-size: 24px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.eventlist-container .event-container .holidayImg {
+    width: 36px;
+    height: 36px;
+    color: #ffffff;
+    background-color: #ff9900;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    border: none;
+    line-height: 1;
+    font-size: 24px;
+    padding: 8px;
+}
+.eventlist-container .event-container .holiday-text {
+    margin-left: auto;
+    padding: 8px;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.eventlist-container .event-container .event-time {
+    margin-left: auto;
+    padding: 8px;
+    font-size: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.footer-container {
+    background-color: #f8f9fa;
+    display: flex;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100px;
+    position: fixed;
+    z-index: 1000;
+}
+
+.footer-container .left-section{
+    width: 50%;
+    display: flex;
+}
+.footer-container .left-section .today-button{
+    padding: 24px 48px;
+    border: none;
+    background: none;
+    color: red;
+    font-size: 24px;
+    cursor: pointer;
+    border-radius: 12px;
+}
+
+.footer-container .right-section{
+    width: 50%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+}
+
+/* ========================================
+   讓ｪ蜷代″・医Λ繝ｳ繝峨せ繧ｱ繝ｼ繝暦ｼ・
+======================================== */
+@media (orientation: landscape) {
+    .footer-container {
+        display: none;
+    }
+    .nav-back-button {
+        display: none;
+    }
+}
+
+/* ========================================
+   邵ｦ蜷代″・・ortrait・・
+======================================== */
+@media (orientation: portrait) {
+    .footer-container{
+        display: flex;
+    }
+}
+/* ----------------------------------------
+   蜈ｱ騾・
+---------------------------------------- */
+.header-container {
+    background-color: #f8f9fa;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+/* 蜈ｱ騾夲ｼ壼ｷｦ蜿ｳ繧ｻ繧ｯ繧ｷ繝ｧ繝ｳ */
+.header-container .left-section,
+.header-container .right-section {
+    display: flex;
+}
+
+/* 繝懊ち繝ｳ蜈ｱ騾・*/
+.header-container button {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    color: red;
+}
+
+/* ---------------------------------------
+   讓ｪ蜷代″・・andscape・・
+--------------------------------------- */
+@media (orientation: landscape) {
+    .header-container {
+        display: grid;
+        grid-template-columns: 1fr 2fr 1fr;
+        height: 60px;
+    }
+    .header-container .left-section {
+        justify-content: flex-start;
+        gap: 50px;
+        padding: 0 10px;
+    }
+    .header-container .left-section button {
+        width: 40px;
+        height: 40px;
+        margin: 10px 0;
+    }
+    .header-container .center-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0 10px;
+    }
+    .center-container .date-type-list {
+        display: flex;
+        align-items: center;
+        height: 90%;
+        gap: 5px;
+        padding: 1px 2px;
+        background-color: #c9c9c9;
+        border-radius: 12px;
+    }
+    .date-type-list .date-type-item {
+        height: 90%;
+        aspect-ratio: 2 / 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 12px;
+        font-weight: bold;
+    }
+    .date-type-list .date-type-item:hover {
+        background-color: #ffffff;
+    }
+    .header-container .right-section {
+        justify-content: flex-end;
+        gap: 50px;
+        padding: 0 10px;
+    }
+    .header-container .right-section button {
+        width: 40px;
+        height: 40px;
+        margin: 10px 0;
+    }
+    .right-section .event-add-button {
+        display: none;
+    }
+}
+
+/* ----------------------------------------
+   邵ｦ蜷代″・・ortrait・・
+---------------------------------------- */
+@media (orientation: portrait) {
+    .header-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        height: 150px;
+    }
+    .header-container .left-section {
+        justify-content: flex-start;
+        align-items: center;
+        padding: 0 50px;
+    }
+    .header-container .right-section {
+        justify-content: flex-end;
+        gap: 50px;
+        padding: 0 50px;
+        align-items: center;
+    }
+    .header-container .right-section button {
+        width: 100px;
+        height: 80px;
+        margin: 50px 0;
+    }
+    .header-container .center-container {
+        display: none;
+    }
+    .header-container .left-section .event-add-button{
+        display: none;
+    }
+}
+.main-container{
+    width: 100%;
+    background-color: #f8f9fa;
+    overflow: hidden;
+    position: fixed;
+}
+
+/* ========================================
+   讓ｪ蜷代″・医Λ繝ｳ繝峨せ繧ｱ繝ｼ繝暦ｼ・
+======================================== */
+@media (orientation: landscape) {
+    .main-container {
+        margin-top: 60px;
+        height: calc(100dvh - 60px);
+    }
+}
+
+/* ========================================
+   邵ｦ蜷代″・・ortrait・・
+======================================== */
+@media (orientation: portrait) {
+    .main-container{
+        margin-top: 150px;
+        height: calc(100dvh - 150px - 100px);
+    }
+}
+.nav-back-button {
+    font-weight: bold;
+    background: none;
+    color: red;
+}
+.day-main table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.day-main table thead tr {
+    border-bottom: 2px solid #b7b7b7;
+}
+.day-main table tbody tr {
+    border-bottom: 1px solid #ccc;
+}
+.day-main table tbody tr td {
+    text-align: center;
+    vertical-align: top;
+}
+
+.main-container .event-list{
+    width: calc(100% - 12px);
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    padding: 12px;
+    gap: 12px;
+}
+.event-list .event-item{
+    text-align: right;
+    padding: 12px 24px;
+    font-weight: bold;
+    background-color: #fcfcfc;
+}
+/* ----------------------------------------
+   邵ｦ蜷代″・・ortrait・・
+---------------------------------------- */
+@media (orientation: portrait) {
+    .nav-back-button {
+        font-size: 36px;
+    }
+    .month-container {
+        height: 100%;
+    }
+    /* 譛郁｡ｨ遉ｺ */
+    .month-display {
+        height: 10%;
+        display: flex;
+        align-items: center;
+    }
+    .month-display .month-text {
+        font-size: 3vh;
+        margin-left: 50px;
+        letter-spacing: 10px;
+    }
+    .month-display .year-month-text {
+        display: none;
+    }
+    /* 譌･陦ｨ遉ｺ */
+    .day-display {
+        height: 90%;
+        display: flex;
+        justify-content: center;
+        touch-action: pan-x;
+    }
+    .day-display .day-main {
+        width: 90%;
+        height: 100%;
+    }
+    .day-main table {
+        height: 100%;
+    }
+    .day-main table tbody tr td .day-text {
+        font-size: 24px;
+        width: 80px;
+        height: 80px;
+        margin: 10px auto;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .day-main table tbody tr td .schedules-list {
+        height: 55%;
+    }
+    .day-main table tbody tr td .schedules-list div {
+        height: 10px;
+        width: 80%;
+        margin: 10px auto;
+    }
+    .event-list {
+        display: none;
+    }
+}
+
+/* ---------------------------------------
+   讓ｪ蜷代″・・andscape・・
+--------------------------------------- */
+@media (orientation: landscape) {
+    .nav-back-button {
+        font-size: 24px;
+    }
+    .main-container {
+        display: grid;
+        grid-template-columns: 400px 1fr;
+    }
+    /* 譛郁｡ｨ遉ｺ */
+    .month-display {
+        height: 32px;
+        display: flex;
+        align-items: center;
+    }
+    .month-display .month-text {
+        display: none;
+    }
+    .month-display .year-month-text {
+        font-size: 20px;
+        margin-left: 20px;
+        letter-spacing: 6px;
+        font-weight: bold;
+    }
+    /* 譌･陦ｨ遉ｺ */
+    .day-display {
+        height: calc(100vh - 32px);
+        display: flex;
+        justify-content: center;
+        touch-action: pan-x;
+    }
+    .day-main table {
+        max-width: 400px;
+    }
+    .day-main table tbody tr {
+        height: 42px;
+    }
+    .day-main table tbody tr td .day-text {
+        font-size: 16px;
+        width: 40px;
+        height: 40px;
+        margin: 4px auto;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .schedules-list {
+        display: none;
+    }
+}
+.search {
+    position: fixed;   
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #ffffff; 
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    /* 繧｢繝九Γ繝ｼ繧ｷ繝ｧ繝ｳ */
+    transform: translateY(-100%);
+    opacity: 0;
+    transition: transform 0.6s ease, opacity 0.6s ease;
+    pointer-events: none;
+}
+.search.active {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.search-container {
+    display: flex;
+    align-items: center;      
+    justify-content: center;     
+    gap: 16px;
+    position: relative;
+    margin-top: 24px;
+}
+.search-input-wrapper {
+    position: relative;
+}
+.search-input-wrapper input[type="text"] {
+    padding: 12px 40px 12px 12px;
+    font-size: 24px;
+    border: none;
+    border-radius: 12px;
+    width: 400px;
+    background-color: #fafafa;
+}
+
+.search .cancel-btn {
+    padding: 8px 16px;
+    font-size: 24px;
+    cursor: pointer;
+    background: none;
+    color: red;
+    border: none;
+}
+
+.search-input-wrapper .clear-btn {
+
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+
+    background: #000000;
+    border: none;
+    border-radius: 50%;
+
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+    color: #ffffff;
+    opacity: 0;
+    pointer-events: none;
+}
+.search-input-wrapper input:not(:placeholder-shown) + .clear-btn {
+    opacity: 1;
+    pointer-events: auto;
+}
+/* 讀懃ｴ｢邨先棡陦ｨ遉ｺ繝ｪ繧ｹ繝・*/
+.search-list{
+    width: 60%;
+    height: calc(100% - 135px);
+    overflow-y: auto;
+    padding: 8px 16px;
+    box-sizing: border-box;
+    background: #ffffff;
+}
+.search-list .search-item {
+    padding: 12px;
+    border-bottom: 1px solid #e0e0e0;
+    font-size: 20px;
+    cursor: pointer;
+    gap: 12px;
+}
+.search-item .search-item-date {
+    font-size: 24px;
+    color: #888888;
+    padding: 12px;
+    margin: 8px;
+    border-bottom: 2px solid #000000;
+}
+.search-item .search-item-title{
+    font-size: 24px;
+    color: #000000;
+    padding: 12px;
+    margin: 8px;
+}
+/* ----------------------------------------
+   邵ｦ蜷代″・・ortrait・・
+---------------------------------------- */
+@media (orientation: portrait) {
+    .search{
+        height: 135px;
+    }
+    .search-container{
+        height: 135px;
+    }
+}
+/* ---------------------------------------
+   讓ｪ蜷代″・・andscape・・
+--------------------------------------- */
+@media (orientation: landscape) {
+    .search{
+        height: 60px;
+    }
+    .search-container{
+        height: 60px;
+        margin-top: 12px;
+    }
+}
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    position: relative;
+}
+/* ----------------------------------------------------
+ 邵ｦ蜷代″・・ortrait・俄ｻ 竭｡繝吶・繧ｹ
+---------------------------------------------------- */
+@media (orientation: portrait) {
+    .nav-back-button{
+        font-size: 36px;
+        font-weight: bold;
+        background:none;
+        color: red;
+        border: none;
+    }
+    /**/
+    .main-container{
+        background-color: #f8f9fa;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    /**/
+    .updEvent-header{
+        width: 100%;
+        height: 60px;
+        margin-bottom: 12px;
+        display: grid;
+        grid-template-columns: 20% 60% 20%;
+        padding: 24px;
+        border-top: 2px solid;
+    }
+    .updEvent-header button{
+        width: 100%;
+        height: 100%;
+        font-size: 36px;
+        background: none;
+        color: red;
+        border: none;
+        cursor: pointer;
+    }
+    .updEvent-header div{
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 48px;
+        font-weight: bold;
+    }
+    /**/
+    .updEvent-container{
+        width: 80%;
+        padding: 36px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 48px;
+    }
+    /* 繧ｿ繧､繝医Ν */
+    .updEvent-container .event-title{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+    .updEvent-container .event-title input[type="text"]{
+        width: 100%;
+        padding: 24px 36px;
+        font-size: 36px;
+        background-color: #ffffff;
+        display: flex;
+        align-items: center;
+
+        border: 2px solid none;
+        border-radius: 36px;
+    }
+    /* 髢句ｧ・邨ゆｺ・律譎ゅ・險ｭ螳・*/
+    .updEvent-container .event-date{
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        background-color: #ffffff;
+        border: 2px solid none;
+        border-radius: 36px;
+    }
+    .event-date .upd-event-datetime-container {
+        margin: 24px 0;
+        width: 80%;
+        display: grid;
+        grid-template-columns: 40% 60%;
+        align-items: center;
+        justify-content: center;
+        border-bottom: 2px solid #ccc;
+        padding: 12px;
+    }
+    .upd-event-datetime-container label{
+        font-size: 36px;
+        font-weight: bold;
+        color: #000000;
+        margin-right: 12px;
+        text-align: left;
+    }
+    .upd-event-datetime-container input{
+        height: 48px;
+        width: 90%;
+        font-size: 24px;
+        padding: 6px 12px;
+        border-radius: 12px;
+        border: 2px solid #ccc;
+        color: #000000;
+        padding: 12px;
+    }
+    /* 繝医げ繝ｫ繧ｹ繧､繝・メ險ｭ螳・*/
+    .switch {
+        position: relative;
+        width: 100px;
+        height: 60px;
+        justify-self: end; /* grid縺ｮ蜿ｳ蟇・○ */
+    }
+    /* checkbox繧帝國縺・*/
+    .switch input[type="checkbox"] {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+    /**/
+    .updEvent-container .event-labalColor{
+        width: 100%;
+        display: grid;
+        grid-template-columns: 40% 60%;
+        justify-content: center;
+        align-items: center;
+        background-color: #ffffff;
+        border-radius: 36px;
+        padding: 24px 0;
+    }
+    .event-labalColor .left{
+        display: flex;
+        justify-content: left;
+        align-items: center;
+    }
+    .event-labalColor .right{
+        display: flex;
+        justify-content: left;
+        align-items: center;
+        gap: 12px;
+    }
+    .event-labalColor .left label{
+        font-size: 24px;
+        font-weight: bold;
+        color: #000000;
+        margin-left: 24px;
+    }
+    .event-labalColor .right input[type="color"]{
+        height: 50px;
+        width: 50px;
+        border-radius: 50%;
+        border: 2px solid #ccc;
+    }
+    .event-labalColor .right input[type="text"]{
+        height: 48px;
+        width: 70%;
+        font-size: 24px;
+        padding: 6px 12px;
+        border-radius: 12px;
+        border: none;
+        color: #000000;
+    }
+    /* 繝｡繝｢ */
+    .updEvent-container .event-text{
+        width: 100%;
+        background-color: #ffffff;
+        border-radius: 36px;
+        padding: 24px 0;
+        height: 500px;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .event-text input[type="text"]{
+        width: 90%;
+        font-size: 24px;
+        padding: 12px;
+        border: none;
+        color: #000000;
+        resize: none;
+        padding: 12px;
+        margin: 12px 0;
+        border-bottom: 2px solid #ccc;
+    }
+    .event-text textarea{
+        width: 90%;
+        height: 70%;
+        font-size: 24px;
+        padding: 12px;
+        border: none;
+        color: #000000;
+        resize: none;
+        padding: 12px;
+        margin-top: 12px;
+        border-bottom: 2px solid #ccc;
+    }
+    /**/
+    .event-delete{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+    .event-delete button{
+        width: 80%;
+        background-color: #ffffff;
+        border: none;
+        border-radius: 36px;
+        color: red;
+        padding: 24px 0;
+        font-size: 24px;
+    }
+}
+
+/* ----------------------------------------------------
+ 讓ｪ蜷代″・・andscape・・
+---------------------------------------------------- */
+@media (orientation: landscape) {
+
+    .main-container {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        background: #f0f0f0;
+    }
+
+    .updEvent-header {
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        align-items: center;
+        padding: 8px 12px;
+        margin-bottom: 8px;
+    }
+    .updEvent-header button {
+        font-size: 16px;
+        background: none;
+        border: none;
+        color: #007aff;
+    }
+    .updEvent-header div {
+        text-align: center;
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    .updEvent-container {
+        flex: 1;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        width: 100% ;
+        margin: 12px 0;
+    }
+
+    .event-title{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+    .event-title input {
+        width: 90%;
+        margin: 0 auto;
+        font-size: 20px;
+        padding: 14px;
+        border-radius: 16px;
+        border: 1px solid #ccc;
+    }
+
+    .event-date,
+    .event-labalColor,
+    .event-text {
+        width: 90%;
+        margin: 0 auto;
+        background: #fff;
+        border-radius: 16px;
+        padding: 12px;
+        display: flex;
+    }
+
+    .event-date,
+    .event-text{
+        flex-direction: column;
+    }
+    .event-date .upd-event-datetime-container {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 40% 60%;
+        align-items: center;
+        justify-content: center;
+        border-bottom: 2px solid #ccc;
+        padding: 12px 0;
+    }
+    .upd-event-datetime-container label{
+        font-size: 14px;
+        font-weight: bold;
+        color: #000000;
+        margin-right: 12px;
+        text-align: left;
+    }
+    .upd-event-datetime-container input{
+        height: 24px;
+        font-size: 14px;
+        padding: 6px 12px;
+        border-radius: 12px;
+        border: 2px solid #ccc;
+        color: #000000;
+        padding: 12px;
+    }
+
+    .updEvent-container .event-labalColor{
+        width: 90%;
+        display: grid;
+        grid-template-columns: 40% 60%;
+        justify-content: center;
+        align-items: center;
+        background-color: #ffffff;
+        border-radius: 12px;
+    }
+    .event-labalColor .left{
+        display: flex;
+        justify-content: left;
+        align-items: center;
+    }
+    .event-labalColor .right{
+        display: flex;
+        justify-content: left;
+        align-items: center;
+        gap: 12px;
+    }
+    .event-labalColor .left label{
+        font-size: 14px;
+        font-weight: bold;
+        color: #000000;
+        margin-left: 24px;
+    }
+    .event-labalColor .right input[type="color"]{
+        height: 25px;
+        width: 25px;
+        border-radius: 50%;
+        border: 2px solid #ccc;
+    }
+    .event-labalColor .right input[type="text"]{
+        height: 24px;
+        width: 70%;
+        font-size: 14px;
+        padding: 6px 12px;
+        border-radius: 12px;
+        border: none;
+        color: #000000;
+    }
+
+    /* 繝｡繝｢ */
+    .updEvent-container .event-text{
+        background: #fff;
+        border-radius: 16px;
+        padding: 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        width: 90%;
+        margin: 0 auto;
+    }
+    .event-text input,
+    .event-text textarea {
+        font-size: 14px;
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+    }
+    .event-text textarea {
+        min-height: 120px;
+        resize: vertical;
+    }
+
+    .event-delete{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+    .event-delete button {
+        width: 90%;
+        margin: 0 auto;
+        height: 48px;
+        background: #fff;
+        color: #ff3b30;
+        border: none;
+        border-radius: 16px;
+    }
+}
+/* ===== 蟷ｴ蠎ｦ陦ｨ遉ｺ ===== */
+.year-display {
+    display: flex;
+    align-items: center;
+    background-color: white;
+}
+.year-display p {
+    font-weight: bolder;
+    margin: 0;
+    padding: 0;
+    margin-left: 12px;
+}
+
+/* ===== 譛郁｡ｨ遉ｺ ===== */
+.month-display {
+    touch-action: pan-x;
+    background-color: white;
+}
+.month-display .month-main {
+    height: 100%;
+    display: grid;
+    text-align: center;
+}
+
+/* ===== 蜷・怦 ===== */
+.month-main .month-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+}
+/* 譛医Λ繝吶Ν */
+.month-container .month-label {
+    text-align: left;
+}
+.month-container .day-table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+.day-table tr {
+    height: calc(100% / 6);
+}
+.day-table td {
+    padding: 0;
+    text-align: center;
+}
+.day-table td .day-text {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 莉頑律 */
+.today {
+    background-color: #ff7070;
+    border-radius: 50%;
+}
+
+/* ========================================
+   讓ｪ蜷代″・医Λ繝ｳ繝峨せ繧ｱ繝ｼ繝暦ｼ・
+======================================== */
+@media (orientation: landscape) {
+    .year-display {
+        height: 48px;
+    }
+    .year-display p {
+        font-size: 24px;
+    }
+    .month-display {
+        height: calc(100% - 48px);
+    }
+    .month-display .month-main {
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        grid-template-rows: repeat(2, 1fr);
+        gap: 8px;
+    }
+    .month-container .month-label {
+        flex: 0 0 20px;
+        font-size: 12px;
+    }
+    .month-container .day-table {
+        flex: 1;
+    }
+    .day-table td .day-text {
+        max-width: 32px;
+    }
+}
+
+/* ========================================
+   邵ｦ蜷代″・医・繝ｼ繝医Ξ繝ｼ繝茨ｼ・
+======================================== */
+@media (orientation: portrait) {
+    .year-display {
+        height: 10%;
+    }
+    .year-display p {
+        font-size: 60px;
+        border-bottom: 3px solid #000;
+    }
+    .month-display {
+        height: 90%;
+        margin: 0 10px;
+    }
+    .month-display .month-main {
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(4, 1fr);
+        gap: 10px;
+    }
+    .month-container .month-label {
+        height: 10%;
+        font-size: 24px;
+    }
+    .month-label p {
+        padding: 12px;
+    }
+    .month-container .day-table {
+        height: 85%;
+    }
+    .day-table td .day-text {
+        max-width: 40px;
+    }
+}

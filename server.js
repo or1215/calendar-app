@@ -40,12 +40,16 @@ app.use("/api", apiRoutes);
    utils / db
 -------------------------------- */
 const { setHolidays } = require("./utils/holidays");
-const { SELECT_schedules } = require("./db/schedules");
+// ↓ initTable を追加
+const { initTable, SELECT_schedules } = require("./db/schedules");
 
 /* -------------------------------
    起動時処理
 -------------------------------- */
 async function bootstrap() {
+    // テーブル作成（初回のみ）
+    await initTable(); // ← 追加
+
     // 祝日データ
     HOLIDAYS = await setHolidays();
 
@@ -58,12 +62,15 @@ async function bootstrap() {
     });
 }
 bootstrap();
+
 /* -------------------------------
    functions
 -------------------------------- */
 async function setSchedules() {
     try {
-        const rows = SELECT_schedules.all();
+        // ↓ .all() を await に変更
+        const rows = await SELECT_schedules();
+
         global.SCHEDULES = {};
 
         rows.forEach(row => {

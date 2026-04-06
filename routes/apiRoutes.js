@@ -10,8 +10,8 @@ const {
 const toNull = v => (v === "" ? null : v);
 
 /* スケジュール追加 */
-router.post('/addEvent', (req, res) => {
-    console.log(req.body); // ← これ
+router.post('/addEvent', async (req, res) => {  // ← async追加
+    console.log(req.body); 
     try {
         const {
             title,
@@ -22,12 +22,21 @@ router.post('/addEvent', (req, res) => {
             url,
             memo
         } = req.body;
-        const result = INSERT_schedules.run(
-            title, startDate, endDate,
-            labelColor, labelName, url, memo
-        );
-        const toNull = v => v === "" ? null : v;
-        const id = result.lastInsertRowid;
+
+        // ↓ .run() を await に変更、引数をオブジェクトで渡す
+        const result = await INSERT_schedules({
+            title,
+            start_date: startDate,
+            end_date: endDate,
+            label_color: toNull(labelColor),
+            label_name: toNull(labelName),
+            url: toNull(url),
+            memo: toNull(memo)
+        });
+
+        // ↓ 本番(PostgreSQL)はRETURNING *でidが返る、開発(SQLite)はlastInsertRowid
+        const id = result.id ?? result.lastInsertRowid;
+
         global.SCHEDULES[id] = {
             id,
             title,
@@ -46,10 +55,10 @@ router.post('/addEvent', (req, res) => {
 });
 
 /* スケジュール削除 */
-router.post('/deleteEvent', (req, res) => {
+router.post('/deleteEvent', async (req, res) => {  // ← async追加
     try {
         const { id } = req.body;
-        DELETE_schedules.run(id);
+        await DELETE_schedules(id);  // ← awaitに変更
         delete global.SCHEDULES[id];
         res.json({ success: true });
     } catch (err) {
@@ -58,19 +67,25 @@ router.post('/deleteEvent', (req, res) => {
 });
 
 /* スケジュール更新 */
-router.post('/updateEvent', (req, res) => {
+router.post('/updateEvent', async (req, res) => {  // ← async追加
     try {
         const {
             id, title, startDate, endDate,
             labelColor, labelName, url, memo
         } = req.body;
 
-        UPDATE_schedules.run(
-            title, startDate, endDate,
-            labelColor, labelName, url, memo, id
-        );
+        // ↓ .run() を await に変更、引数をオブジェクトで渡す
+        await UPDATE_schedules({
+            id,
+            title,
+            start_date: startDate,
+            end_date: endDate,
+            label_color: toNull(labelColor),
+            label_name: toNull(labelName),
+            url: toNull(url),
+            memo: toNull(memo)
+        });
 
-        const toNull = v => v === "" ? null : v;
         global.SCHEDULES[id] = {
             id,
             title,
