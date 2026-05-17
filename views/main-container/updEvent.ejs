@@ -205,6 +205,8 @@ updBtn.addEventListener('click', async () =>{
         if (result.success) location.href = `/updEvent?year=${YEAR}&month=${MONTH}&day=${DAY}&id=${eventId}`;
         else alert('予定の更新に失敗しました');
 
+        alert('更新が完了しました');
+
     } catch (err) {
         console.error(err);
         alert('通信エラーが発生しました');
