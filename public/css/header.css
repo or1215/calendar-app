@@ -1,6 +1,4 @@
-/* ----------------------------------------
-   共通
----------------------------------------- */
+/* 共通 */
 .header-container {
     background-color: #f8f9fa;
     position: fixed;
@@ -24,9 +22,7 @@
     color: red;
 }
 
-/* ---------------------------------------
-   横向き（landscape）
---------------------------------------- */
+/* 横向き */
 @media (orientation: landscape) {
     .header-container {
         display: grid;
@@ -85,9 +81,7 @@
     }
 }
 
-/* ----------------------------------------
-   縦向き（portrait）
----------------------------------------- */
+/* 縦向き */
 @media (orientation: portrait) {
     .header-container {
         display: grid;

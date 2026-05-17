@@ -32,9 +32,7 @@
     font-weight: bold;
     background-color: #fcfcfc;
 }
-/* ----------------------------------------
-   縦向き（portrait）
----------------------------------------- */
+/* 縦向き */
 @media (orientation: portrait) {
     .nav-back-button {
         font-size: 36px;
@@ -93,9 +91,7 @@
     }
 }
 
-/* ---------------------------------------
-   横向き（landscape）
---------------------------------------- */
+/* 横向き */
 @media (orientation: landscape) {
     .nav-back-button {
         font-size: 24px;

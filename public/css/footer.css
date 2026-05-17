@@ -30,9 +30,7 @@
     align-items: flex-end;
 }
 
-/* ========================================
-   横向き（ランドスケープ）
-======================================== */
+/* 横向き */
 @media (orientation: landscape) {
     .footer-container {
         display: none;
@@ -42,9 +40,7 @@
     }
 }
 
-/* ========================================
-   縦向き（portrait）
-======================================== */
+/* 縦向き */
 @media (orientation: portrait) {
     .footer-container{
         display: flex;

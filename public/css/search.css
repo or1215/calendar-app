@@ -108,9 +108,7 @@
     padding: 12px;
     margin: 8px;
 }
-/* ----------------------------------------
-   縦向き（portrait）
----------------------------------------- */
+/* 縦向き */
 @media (orientation: portrait) {
     .search{
         height: 135px;
@@ -119,9 +117,7 @@
         height: 135px;
     }
 }
-/* ---------------------------------------
-   横向き（landscape）
---------------------------------------- */
+/* 横向き */
 @media (orientation: landscape) {
     .search{
         height: 60px;

@@ -54,15 +54,13 @@
     justify-content: center;
 }
 
-/* 今日 */
+/* 当日の設定 */
 .today {
     background-color: #ff7070;
     border-radius: 50%;
 }
 
-/* ========================================
-   横向き（ランドスケープ）
-======================================== */
+/* 横向き */
 @media (orientation: landscape) {
     .year-display {
         height: 48px;
@@ -90,9 +88,7 @@
     }
 }
 
-/* ========================================
-   縦向き（ポートレート）
-======================================== */
+/* 縦向き */
 @media (orientation: portrait) {
     .year-display {
         height: 10%;
