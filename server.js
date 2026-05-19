@@ -40,21 +40,20 @@ app.use("/api", apiRoutes);
    utils / db
 -------------------------------- */
 const { setHolidays } = require("./utils/holidays");
-// ↓ initTable を追加
 const { initTable, SELECT_schedules } = require("./db/schedules");
 
 /* -------------------------------
    起動時処理
 -------------------------------- */
-async function bootstrap() {
+function bootstrap() {
     // テーブル作成（初回のみ）
-    await initTable(); // ← 追加
+    initTable(); // ← 追加
 
     // 祝日データ
-    HOLIDAYS = await setHolidays();
+    HOLIDAYS = setHolidays();
 
     // 予定データ
-    await setSchedules();
+    setSchedules();
 
     app.listen(PORT, "0.0.0.0", () => {
         const url = `http://localhost:${PORT}`;
@@ -66,13 +65,11 @@ bootstrap();
 /* -------------------------------
    functions
 -------------------------------- */
-async function setSchedules() {
+/* 予定データを取得 */
+function setSchedules() {
     try {
-        // ↓ .all() を await に変更
-        const rows = await SELECT_schedules();
-
+        const rows = SELECT_schedules();
         global.SCHEDULES = {};
-
         rows.forEach(row => {
             global.SCHEDULES[row.id] = {
                 id          : row.id,
@@ -85,7 +82,6 @@ async function setSchedules() {
                 memo        : row.memo,
             };
         });
-
         console.log("予定データをDBから取得");
         return true;
     } catch (err) {
