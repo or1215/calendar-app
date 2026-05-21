@@ -7,13 +7,13 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 /* -------------------------------
-   グローバルデータ
+    グローバルデータ
 -------------------------------- */
 let HOLIDAYS = {};
 global.SCHEDULES = {};
 
 /* -------------------------------
-   middleware
+    ミドルウェア設定
 -------------------------------- */
 app.use(express.static(path.join(__dirname, "public")));
 app.set("view engine", "ejs");
@@ -23,7 +23,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 /* -------------------------------
-   routes
+    ルート設定
 -------------------------------- */
 const pageRoutes = require("./routes/pageRoutes");
 const apiRoutes  = require("./routes/apiRoutes");
@@ -37,34 +37,10 @@ app.use("/", pageRoutes);
 app.use("/api", apiRoutes);
 
 /* -------------------------------
-   utils / db
+    ユーティリティ関数(祝日・予定データの取得)
 -------------------------------- */
 const { setHolidays } = require("./utils/holidays");
 const { initTable, SELECT_schedules } = require("./db/schedules");
-
-/* -------------------------------
-   起動時処理
--------------------------------- */
-function bootstrap() {
-    // テーブル作成（初回のみ）
-    initTable(); // ← 追加
-
-    // 祝日データ
-    HOLIDAYS = setHolidays();
-
-    // 予定データ
-    setSchedules();
-
-    app.listen(PORT, "0.0.0.0", () => {
-        const url = `http://localhost:${PORT}`;
-        console.log(`Server running at ${url}`);
-    });
-}
-bootstrap();
-
-/* -------------------------------
-   functions
--------------------------------- */
 /* 予定データを取得 */
 function setSchedules() {
     try {
@@ -90,3 +66,23 @@ function setSchedules() {
         return false;
     }
 }
+
+/* -------------------------------
+   起動時処理
+-------------------------------- */
+function bootstrap() {
+    // テーブル作成（初回のみ）
+    initTable(); 
+
+    // 祝日データ
+    HOLIDAYS = setHolidays();
+
+    // 予定データ
+    setSchedules();
+
+    app.listen(PORT, "0.0.0.0", () => {
+        const url = `http://localhost:${PORT}`;
+        console.log(`Server running at ${url}`);
+    });
+}
+bootstrap();
